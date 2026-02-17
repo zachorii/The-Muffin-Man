@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Muffin Man</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #faf6f1;
+  color: #333;
+}
+
+header {
+  background: #4b2e2e;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 38px;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+h2 {
+  margin-top: 0;
+}
+
+.price-box {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.price {
+  background: #fff;
+  border: 2px solid #4b2e2e;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  flex: 1;
+  min-width: 120px;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+}
+
+input, select, textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #4b2e2e;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #6a3f3f;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Alicia’s Muffins</h1>
+  <p>Fresh baked. Small batch. Crumble on top.</p>
+</header>
+
+<main>
+
+<div class="card">
+<h2>Menu</h2>
+
+<p><strong>Blueberry</strong> – Cinnamon crumble topping</p>
+<p><strong>Strawberry Lemon</strong> – Lemon crumble topping</p>
+<p><strong>Chocolate Raspberry</strong> – Cocoa crumble topping</p>
+<p><strong>Double Chocolate</strong> – Espresso crumble topping</p>
+
+</div>
+
+<div class="card">
+<h2>Pricing</h2>
+<div class="price-box">
+  <div class="price">
+    <div>Single</div>
+    <div><strong>$3</strong></div>
+  </div>
+  <div class="price">
+    <div>Half Dozen (6)</div>
+    <div><strong>$15</strong></div>
+  </div>
+  <div class="price">
+    <div>Dozen (12)</div>
+    <div><strong>$30</strong></div>
+  </div>
+</div>
+</div>
+
+<div class="card">
+<h2>Place an Order</h2>
+
+<form onsubmit="return sendOrder(event)">
+  <input type="text" id="name" placeholder="Your Name" required>
+  <input type="text" id="phone" placeholder="Phone (optional)">
+  
+  <select id="flavor" required>
+    <option value="">Select Flavor</option>
+    <option>Blueberry</option>
+    <option>Strawberry Lemon</option>
+    <option>Chocolate Raspberry</option>
+    <option>Double Chocolate</option>
+  </select>
+
+  <select id="quantity" required>
+    <option value="">Select Quantity</option>
+    <option>1 Muffin ($3)</option>
+    <option>6 Muffins ($15)</option>
+    <option>12 Muffins ($30)</option>
+  </select>
+
+  <textarea id="notes" placeholder="Pickup time or notes"></textarea>
+
+  <button type="submit">Email Order</button>
+</form>
+
+</div>
+
+</main>
+
+<script>
+function sendOrder(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const flavor = document.getElementById("flavor").value;
+  const quantity = document.getElementById("quantity").value;
+  const notes = document.getElementById("notes").value;
+
+  const subject = encodeURIComponent("New Muffin Order - " + name);
+  const body = encodeURIComponent(
+`Name: ${name}
+Phone: ${phone}
+Flavor: ${flavor}
+Quantity: ${quantity}
+Notes: ${notes}`
+  );
+
+  window.location.href = `mailto:zachorii92@gmail.com?subject=${subject}&body=${body}`;
+  return false;
+}
+</script>
+
+</body>
+</html>
