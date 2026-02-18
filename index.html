@@ -526,23 +526,22 @@ Total: $${money(total)}
 
   const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
 
-  const payload = {
-    orderNumber: lastOrder.orderNumber,
-    name: lastOrder.name,
-    phone: lastOrder.phone,
-    paymentMethod: payMethod,
-    paymentHandle: payHandle,
-    orderDetails: lastOrder.summaryText
-  };
+  // Build classic form-encoded payload (avoids CORS preflight issues)
+const formData = new URLSearchParams();
+formData.append("orderNumber", lastOrder.orderNumber);
+formData.append("name", lastOrder.name);
+formData.append("phone", lastOrder.phone);
+formData.append("paymentMethod", payMethod);
+formData.append("paymentHandle", payHandle);
+formData.append("orderDetails", lastOrder.summaryText);
 
-  try {
-    const response = await fetch(FORM_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
+const response = await fetch(FORM_ENDPOINT, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+  },
+  body: formData.toString()
+});
 
     if (response.ok) {
       alert("Order sent successfully! Please complete payment.");
