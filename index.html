@@ -244,6 +244,23 @@
         </div>
       </div>
 
+      <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
+  <div style="font-weight:900; margin-bottom:8px;">How will you pay?</div>
+
+  <label for="payMethod" style="font-weight:700; font-size:13px;">Payment method (required)</label>
+  <select id="payMethod" required style="margin-top:6px;">
+    <option value="">Select…</option>
+    <option value="Zelle">Zelle</option>
+    <option value="Cash App">Cash App</option>
+    <option value="Apple Pay">Apple Pay</option>
+  </select>
+
+  <label for="payHandle" style="font-weight:700; font-size:13px; margin-top:10px; display:block;">
+    Payment name/handle (optional)
+  </label>
+  <input id="payHandle" placeholder="Example: John S. / $mycashapp / last 4 digits" style="margin-top:6px;" />
+</div>
+
       <div style="display:grid; gap:10px;">
         <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
           <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
@@ -429,6 +446,11 @@
     const modal = document.getElementById("paymentModal");
     document.body.style.overflow = "";
     if (modal) modal.style.display = "none";
+
+    const methodEl = document.getElementById("payMethod");
+    const handleEl = document.getElementById("payHandle");
+    if (methodEl) methodEl.value = "";
+    if (handleEl) handleEl.value = "";
   }
 
   async function copyText(elementId) {
@@ -503,13 +525,31 @@ Confirmation will be sent via email or text no more than 12 hours after payment.
   }
 
   function sendOrderEmailFromModal() {
-    if (!lastOrder) return;
+  if (!lastOrder) return;
 
-    const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name}`);
-    const body = encodeURIComponent(lastOrder.summaryText);
+  const methodEl = document.getElementById("payMethod");
+  const handleEl = document.getElementById("payHandle");
 
-    window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+  const payMethod = methodEl ? methodEl.value.trim() : "";
+  const payHandle = handleEl ? handleEl.value.trim() : "";
+
+  if (!payMethod) {
+    alert("Please select how you will pay (Zelle, Cash App, or Apple Pay).");
+    return;
   }
+
+  // Append payment info to the summary you receive
+  const appended =
+`${lastOrder.summaryText}
+
+PAYMENT METHOD SELECTED:
+${payMethod}${payHandle ? ` (${payHandle})` : ""}`;
+
+  const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name} - ${payMethod}`);
+  const body = encodeURIComponent(appended);
+
+  window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+}
 
   // DOM-ready init: populate selects and render cart
   document.addEventListener("DOMContentLoaded", () => {
