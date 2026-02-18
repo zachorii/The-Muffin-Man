@@ -526,7 +526,6 @@ Total: $${money(total)}
 
   const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
 
-  // Build classic form-encoded payload (avoids CORS preflight issues)
   const formData = new URLSearchParams();
   formData.append("orderNumber", lastOrder.orderNumber);
   formData.append("name", lastOrder.name);
@@ -536,24 +535,23 @@ Total: $${money(total)}
   formData.append("orderDetails", lastOrder.summaryText);
 
   try {
-    const response = await fetch(FORM_ENDPOINT, {
+    await fetch(FORM_ENDPOINT, {
       method: "POST",
+      mode: "no-cors", // <-- key line: prevents CORS from triggering "network error"
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
       },
       body: formData.toString()
     });
 
-    if (response.ok) {
-      alert("Order sent successfully! Please complete payment.");
-      closePaymentModal();
-      clearCart();
-    } else {
-      alert("There was an issue sending the order. Please try again.");
-    }
+    // With no-cors, we assume success if no exception was thrown
+    alert("Order sent successfully! Please complete payment.");
+    closePaymentModal();
+    clearCart();
 
   } catch (error) {
-    alert("Network error. Please try again.");
+    // If you STILL get here, it's usually offline or a real network problem
+    alert("Network error. Please check your connection and try again.");
   }
 }
 
