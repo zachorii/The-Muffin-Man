@@ -215,6 +215,86 @@
       </div>
     </div>
   </div>
+
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); padding:16px; z-index:9999;">
+  <div style="max-width:720px; margin:60px auto; background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.25);">
+    <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+      <div>
+        <h2 style="margin:0;">Payment Required</h2>
+        <p style="margin:6px 0 0; color:#555;">
+          Please pay to confirm your order. Include your Order # in the payment note/memo.
+        </p>
+      </div>
+      <button type="button" class="secondary" onclick="closePaymentModal()" style="height:40px;">Close</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="display:grid; gap:10px;">
+      <div style="background:#faf6f1; border:1px solid #eee; border-radius:12px; padding:12px;">
+        <div style="font-weight:900; font-size:18px;">
+          Order #: <span id="orderNumberText"></span>
+        </div>
+        <div style="margin-top:6px; color:#555;">
+          <strong>Deadline:</strong> Orders must be placed and paid before <strong>Wednesday 7am</strong>.
+        </div>
+        <div style="margin-top:6px; color:#555;">
+          Confirmation will be sent via email or text <strong>no more than 12 hours after payment</strong>.
+        </div>
+      </div>
+
+      <div style="display:grid; gap:10px;">
+        <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+            <div>
+              <div style="font-weight:900;">Zelle</div>
+              <div id="zelleText" style="color:#555;">zachorii92@gmail.com</div>
+            </div>
+            <button type="button" onclick="copyText('zelleText')">Copy</button>
+          </div>
+        </div>
+
+        <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+            <div>
+              <div style="font-weight:900;">Cash App</div>
+              <div id="cashappText" style="color:#555;">$zachorii</div>
+            </div>
+            <button type="button" onclick="copyText('cashappText')">Copy</button>
+          </div>
+        </div>
+
+        <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+            <div>
+              <div style="font-weight:900;">Apple Pay</div>
+              <div id="applepayText" style="color:#555;">9729214688</div>
+            </div>
+            <button type="button" onclick="copyText('applepayText')">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div>
+        <h3 style="margin:0 0 6px;">Order Summary</h3>
+        <pre id="orderSummaryText" style="margin:0; white-space:pre-wrap; background:#111; color:#fff; padding:12px; border-radius:12px; font-size:13px;"></pre>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
+        <button type="button" onclick="sendOrderEmailFromModal()">Send Order Details (Email)</button>
+        <button type="button" class="secondary" onclick="closePaymentModal()">I’ll pay now</button>
+      </div>
+
+      <p style="margin:0; color:#666; font-size:12px;">
+        Tip: Use the Order # in your payment note (ex: “MM-ABC123”).
+      </p>
+    </div>
+  </div>
+</div>
+  
 </main>
 
 <script>
@@ -320,11 +400,97 @@
     totalEl.textContent = money(total);
   }
 
-  function submitOrder() {
-    if (cart.length === 0) {
-      alert("Your cart is empty. Add muffins first.");
-      return;
-    }
+  let lastOrder = null;
+
+function generateOrderNumber() {
+  // Example: MM-7F3K2Q (simple + readable)
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return `MM-${code}`;
+}
+
+function openPaymentModal(orderNumber, summaryText) {
+  document.getElementById("orderNumberText").textContent = orderNumber;
+  document.getElementById("orderSummaryText").textContent = summaryText;
+  document.getElementById("paymentModal").style.display = "block";
+}
+
+function closePaymentModal() {
+  document.getElementById("paymentModal").style.display = "none";
+}
+
+async function copyText(elementId) {
+  const text = document.getElementById(elementId).textContent.trim();
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("Copied!");
+  } catch {
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    alert("Copied!");
+  }
+}
+
+function submitOrder() {
+  if (cart.length === 0) {
+    alert("Your cart is empty. Add muffins first.");
+    return;
+  }
+
+  const name = document.getElementById("custName").value.trim() || "—";
+  const phone = document.getElementById("custPhone").value.trim() || "—";
+  const notes = document.getElementById("custNotes").value.trim() || "—";
+
+  let lines = [];
+  let total = 0;
+  let totalMuffins = 0;
+
+  cart.forEach(item => {
+    const pack = PACKS[item.type];
+    const muffins = item.packQty * pack.muffinsPerPack;
+    const price = item.packQty * pack.pricePerPack;
+    total += price;
+    totalMuffins += muffins;
+
+    lines.push(`${item.flavor} — ${item.packQty} × ${pack.label} (${pack.muffinsPerPack}) = ${muffins} muffins — $${money(price)}`);
+  });
+
+  const orderNumber = generateOrderNumber();
+
+  const summaryText =
+`Order #: ${orderNumber}
+
+Customer: ${name}
+Phone: ${phone}
+
+Order:
+${lines.join("\n")}
+
+Total muffins: ${totalMuffins}
+Total: $${money(total)}
+
+Notes:
+${notes}
+
+PAYMENT INFO:
+Zelle: zachorii92@gmail.com
+Cash App: $zachorii
+Apple Pay: 9729214688
+
+IMPORTANT:
+Orders must be placed and paid before Wednesday 7am.
+Confirmation will be sent via email or text no more than 12 hours after payment.
+`;
+
+  lastOrder = { orderNumber, name, phone, notes, summaryText };
+  openPaymentModal(orderNumber, summaryText);
+}
 
     const name = document.getElementById("custName").value.trim() || "—";
     const phone = document.getElementById("custPhone").value.trim() || "—";
@@ -363,6 +529,16 @@ ${notes}`
   }
 
   renderCart();
+
+function sendOrderEmailFromModal() {
+  if (!lastOrder) return;
+
+  const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name}`);
+  const body = encodeURIComponent(lastOrder.summaryText);
+
+  window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+}
+  
 </script>
 
 </body>
