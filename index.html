@@ -6,176 +6,366 @@
 <title>The Muffin Man</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #faf6f1;
-  color: #333;
-}
+  body { margin:0; font-family: Arial, sans-serif; background:#faf6f1; color:#333; }
+  header { background:#4b2e2e; color:#fff; text-align:center; padding:36px 16px; }
+  h1 { margin:0; font-size:38px; }
+  header p { margin:8px 0 0; opacity:.9; }
+  main { max-width: 980px; margin: 0 auto; padding: 24px 16px 60px; }
 
-header {
-  background: #4b2e2e;
-  color: white;
-  text-align: center;
-  padding: 40px 20px;
-}
+  .grid { display:grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 860px) { .grid { grid-template-columns: 1.2fr .8fr; } }
 
-h1 {
-  margin: 0;
-  font-size: 38px;
-}
+  .card {
+    background:#fff; border-radius:12px; padding:18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  }
 
-main {
-  max-width: 900px;
-  margin: auto;
-  padding: 30px 20px;
-}
+  h2 { margin:0 0 10px; }
+  .muted { color:#666; margin: 6px 0 0; }
 
-.card {
-  background: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
+  .menu p { margin:8px 0; }
 
-h2 {
-  margin-top: 0;
-}
+  .builder { display:grid; gap: 12px; }
+  .pack {
+    border: 1px solid #e6e6e6; border-radius: 12px; padding: 14px;
+    display:grid; gap: 10px; background:#fff;
+  }
+  .pack-title { display:flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .pill { font-size: 12px; background:#f3f3f3; padding: 4px 10px; border-radius: 999px; }
 
-.price-box {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap;
-}
+  label { font-weight: 700; font-size: 13px; }
+  .row { display:grid; grid-template-columns: 1fr 160px; gap: 10px; }
+  @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
 
-.price {
-  background: #fff;
-  border: 2px solid #4b2e2e;
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-  flex: 1;
-  min-width: 120px;
-}
+  select, input, textarea {
+    width:100%; padding:10px 12px; border-radius:10px;
+    border:1px solid #d4d4d4; font: inherit; background:#fff;
+  }
 
-form {
-  display: grid;
-  gap: 12px;
-}
+  button {
+    padding: 10px 12px; border-radius: 10px; border: none;
+    background:#4b2e2e; color:#fff; font-weight: 800; cursor: pointer;
+  }
+  button:hover { background:#6a3f3f; }
+  button.secondary { background:#f3f3f3; color:#111; border:1px solid #ddd; }
+  button.secondary:hover { background:#ededed; }
 
-input, select, textarea {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
+  .cart-list { margin: 0; padding-left: 18px; }
+  .cart-item { display:flex; justify-content: space-between; gap: 12px; margin: 8px 0; }
+  .cart-item small { color:#666; display:block; }
+  .cart-actions { display:flex; gap: 8px; align-items:center; }
+  .remove-btn {
+    background:#fff; color:#4b2e2e; border:1px solid #4b2e2e;
+    padding: 6px 10px; border-radius: 10px; font-weight: 800;
+  }
+  .remove-btn:hover { background:#faf6f1; }
 
-button {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #4b2e2e;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
+  .total { font-size: 18px; font-weight: 900; }
+  .divider { height:1px; background:#eee; margin: 14px 0; }
 
-button:hover {
-  background: #6a3f3f;
-}
+  .notice {
+    background:#fff7e8; border:1px solid #f2d7ad; padding: 10px 12px;
+    border-radius: 12px; color:#7a4f00; margin-top: 12px;
+  }
 </style>
 </head>
 
 <body>
-
 <header>
   <h1>The Muffin Man</h1>
-  <p>Fresh baked. Small batch. Crumble on top.</p>
+  <p>Small-batch muffins with crunchy crumble toppings</p>
 </header>
 
 <main>
+  <div class="grid">
+    <!-- LEFT COLUMN -->
+    <div class="card">
+      <h2>Menu</h2>
+      <div class="menu">
+        <p><strong>Blueberry</strong> – Cinnamon crumble topping</p>
+        <p><strong>Strawberry Lemon</strong> – Lemon crumble topping</p>
+        <p><strong>Chocolate Raspberry</strong> – Cocoa crumble topping</p>
+        <p><strong>Double Chocolate</strong> – Espresso crumble topping</p>
+      </div>
 
-<div class="card">
-<h2>Menu</h2>
+      <div class="divider"></div>
 
-<p><strong>Blueberry Cinnamon</strong> – Fresh Blueberries with a Cinnamon Sugar Crumble</p>
-<p><strong>Strawberry Lemon</strong> – Sweet Strawberries with a Lemon Crumble</p>
-<p><strong>Chocolate Raspberry</strong> – Chocolate Muffin with Tart Raspberries & Cocoa Crumble</p>
-<p><strong>Double Chocolate</strong> – Chocolate Muffin with Dark Chocolate Chunks & Espresso Crumble</p>
+      <h2>Build Your Order</h2>
+      <p class="muted">Add singles, half dozens, and/or dozens to your cart, then submit one order.</p>
 
-</div>
+      <div class="builder">
+        <!-- PACK 1: SINGLE -->
+        <div class="pack">
+          <div class="pack-title">
+            <strong>Single Muffin</strong>
+            <span class="pill">$3 each</span>
+          </div>
 
-<div class="card">
-<h2>Pricing</h2>
-<div class="price-box">
-  <div class="price">
-    <div>Single</div>
-    <div><strong>$3</strong></div>
+          <div class="row">
+            <div>
+              <label for="flavorSingle">Flavor</label>
+              <select id="flavorSingle">
+                <option>Blueberry</option>
+                <option>Strawberry Lemon</option>
+                <option>Chocolate Raspberry</option>
+                <option>Double Chocolate</option>
+              </select>
+            </div>
+            <div>
+              <label for="qtySingle">How many singles?</label>
+              <select id="qtySingle"></select>
+            </div>
+          </div>
+
+          <button type="button" onclick="addToCart('single')">Add Singles</button>
+          <p style="font-size:12px; color:#777; margin:0;">
+            Need 6 or more? Choose Half Dozen for better value.
+          </p>
+        </div>
+
+        <!-- PACK 2: HALF DOZEN -->
+        <div class="pack">
+          <div class="pack-title">
+            <strong>Half Dozen (6)</strong>
+            <span class="pill">$15 per 6</span>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="flavorHalf">Flavor</label>
+              <select id="flavorHalf">
+                <option>Blueberry</option>
+                <option>Strawberry Lemon</option>
+                <option>Chocolate Raspberry</option>
+                <option>Double Chocolate</option>
+              </select>
+            </div>
+            <div>
+              <label for="qtyHalf">How many half dozens?</label>
+              <select id="qtyHalf"></select>
+            </div>
+          </div>
+
+          <button type="button" onclick="addToCart('half')">Add Half Dozens</button>
+        </div>
+
+        <!-- PACK 3: DOZEN -->
+        <div class="pack">
+          <div class="pack-title">
+            <strong>Dozen (12)</strong>
+            <span class="pill">$30 per 12</span>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="flavorDozen">Flavor</label>
+              <select id="flavorDozen">
+                <option>Blueberry</option>
+                <option>Strawberry Lemon</option>
+                <option>Chocolate Raspberry</option>
+                <option>Double Chocolate</option>
+              </select>
+            </div>
+            <div>
+              <label for="qtyDozen">How many dozens?</label>
+              <select id="qtyDozen"></select>
+            </div>
+          </div>
+
+          <button type="button" onclick="addToCart('dozen')">Add Dozens</button>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>Note:</strong> Each line item is one flavor. Add multiple lines if you want multiple flavors.
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="card">
+      <h2>Your Cart</h2>
+      <p class="muted" id="cartEmptyText">Your cart is empty. Add something on the left.</p>
+
+      <div id="cartArea" style="display:none;">
+        <ul class="cart-list" id="cartList"></ul>
+        <div class="divider"></div>
+        <div class="total">Total: $<span id="cartTotal">0</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2>Customer Info</h2>
+      <div style="display:grid; gap:10px;">
+        <div>
+          <label for="custName">Name</label>
+          <input id="custName" placeholder="Your name" />
+        </div>
+        <div>
+          <label for="custPhone">Phone (optional)</label>
+          <input id="custPhone" placeholder="(555) 123-4567" />
+        </div>
+        <div>
+          <label for="custNotes">Pickup time / notes</label>
+          <textarea id="custNotes" placeholder="Example: pickup Friday after 5"></textarea>
+        </div>
+
+        <button type="button" onclick="submitOrder()">Submit Order (Email)</button>
+        <button class="secondary" type="button" onclick="clearCart()">Clear Cart</button>
+
+        <p class="muted" style="margin: 0;">
+          This site uses email submission (no payment processing yet).
+        </p>
+      </div>
+    </div>
   </div>
-  <div class="price">
-    <div>Half Dozen (6)</div>
-    <div><strong>$15</strong></div>
-  </div>
-  <div class="price">
-    <div>Dozen (12)</div>
-    <div><strong>$30</strong></div>
-  </div>
-</div>
-</div>
-
-<div class="card">
-<h2>Place an Order</h2>
-
-<form onsubmit="return sendOrder(event)">
-  <input type="text" id="name" placeholder="Your Name" required>
-  <input type="text" id="phone" placeholder="Phone (optional)">
-  
-  <select id="flavor" required>
-    <option value="">Select Flavor</option>
-    <option>Blueberry</option>
-    <option>Strawberry Lemon</option>
-    <option>Chocolate Raspberry</option>
-    <option>Double Chocolate</option>
-  </select>
-
-  <select id="quantity" required>
-    <option value="">Select Quantity</option>
-    <option>1 Muffin ($3)</option>
-    <option>6 Muffins ($15)</option>
-    <option>12 Muffins ($30)</option>
-  </select>
-
-  <textarea id="notes" placeholder="Pickup time or notes"></textarea>
-
-  <button type="submit">Email Order</button>
-</form>
-
-</div>
-
 </main>
 
 <script>
-function sendOrder(e) {
-  e.preventDefault();
+  // ---- CONFIG ----
+  const YOUR_EMAIL = "YOUR_EMAIL_HERE";
 
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const flavor = document.getElementById("flavor").value;
-  const quantity = document.getElementById("quantity").value;
-  const notes = document.getElementById("notes").value;
+  const PACKS = {
+    single: { label: "Single", muffinsPerPack: 1, pricePerPack: 3 },
+    half:   { label: "Half Dozen", muffinsPerPack: 6, pricePerPack: 15 },
+    dozen:  { label: "Dozen", muffinsPerPack: 12, pricePerPack: 30 }
+  };
 
-  const subject = encodeURIComponent("New Muffin Order - " + name);
-  const body = encodeURIComponent(
-`Name: ${name}
+  // Cart items look like:
+  // { type: 'half', flavor: 'Blueberry', packQty: 2 }
+  let cart = [];
+
+  // Populate quantity dropdowns
+  function fillQty(selectId, max) {
+    const el = document.getElementById(selectId);
+    for (let i = 1; i <= max; i++) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = i;
+      el.appendChild(opt);
+    }
+  }
+  fillQty("qtySingle", 5);   // singles capped at 5
+  fillQty("qtyHalf", 12);
+  fillQty("qtyDozen", 12);
+
+  function money(n) { return Number(n).toFixed(2).replace(/\.00$/, ""); }
+
+  function addToCart(type) {
+    const pack = PACKS[type];
+    const flavorEl = document.getElementById(type === "single" ? "flavorSingle" : type === "half" ? "flavorHalf" : "flavorDozen");
+    const qtyEl = document.getElementById(type === "single" ? "qtySingle" : type === "half" ? "qtyHalf" : "qtyDozen");
+
+    const flavor = flavorEl.value;
+    const packQty = parseInt(qtyEl.value, 10);
+
+    // Merge with existing same type+flavor
+    const existingIndex = cart.findIndex(i => i.type === type && i.flavor === flavor);
+    if (existingIndex !== -1) {
+      cart[existingIndex].packQty += packQty;
+    } else {
+      cart.push({ type, flavor, packQty });
+    }
+
+    renderCart();
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+  }
+
+  function clearCart() {
+    cart = [];
+    renderCart();
+  }
+
+  function renderCart() {
+    const list = document.getElementById("cartList");
+    const totalEl = document.getElementById("cartTotal");
+    const emptyText = document.getElementById("cartEmptyText");
+    const cartArea = document.getElementById("cartArea");
+
+    list.innerHTML = "";
+
+    if (cart.length === 0) {
+      emptyText.style.display = "block";
+      cartArea.style.display = "none";
+      totalEl.textContent = "0";
+      return;
+    }
+
+    emptyText.style.display = "none";
+    cartArea.style.display = "block";
+
+    let total = 0;
+
+    cart.forEach((item, idx) => {
+      const pack = PACKS[item.type];
+      const muffins = item.packQty * pack.muffinsPerPack;
+      const price = item.packQty * pack.pricePerPack;
+      total += price;
+
+      const li = document.createElement("li");
+      li.className = "cart-item";
+      li.innerHTML = `
+        <div>
+          <strong>${item.flavor}</strong>
+          <small>${item.packQty} × ${pack.label} (${pack.muffinsPerPack} each) = ${muffins} muffins</small>
+        </div>
+        <div class="cart-actions">
+          <strong>$${money(price)}</strong>
+          <button class="remove-btn" type="button" onclick="removeItem(${idx})">Remove</button>
+        </div>
+      `;
+      list.appendChild(li);
+    });
+
+    totalEl.textContent = money(total);
+  }
+
+  function submitOrder() {
+    if (cart.length === 0) {
+      alert("Your cart is empty. Add muffins first.");
+      return;
+    }
+
+    const name = document.getElementById("custName").value.trim() || "—";
+    const phone = document.getElementById("custPhone").value.trim() || "—";
+    const notes = document.getElementById("custNotes").value.trim() || "—";
+
+    let lines = [];
+    let total = 0;
+    let totalMuffins = 0;
+
+    cart.forEach(item => {
+      const pack = PACKS[item.type];
+      const muffins = item.packQty * pack.muffinsPerPack;
+      const price = item.packQty * pack.pricePerPack;
+      total += price;
+      totalMuffins += muffins;
+
+      lines.push(`${item.flavor} — ${item.packQty} × ${pack.label} (${pack.muffinsPerPack}) = ${muffins} muffins — $${money(price)}`);
+    });
+
+    const subject = encodeURIComponent(`Muffin Order - ${name}`);
+    const body = encodeURIComponent(
+`Customer: ${name}
 Phone: ${phone}
-Flavor: ${flavor}
-Quantity: ${quantity}
-Notes: ${notes}`
-  );
 
-  window.location.href = `mailto:zachorii92@gmail.com?subject=${subject}&body=${body}`;
-  return false;
-}
+Order:
+${lines.join("\n")}
+
+Total muffins: ${totalMuffins}
+Total: $${money(total)}
+
+Notes:
+${notes}`
+    );
+
+    window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+  }
+
+  renderCart();
 </script>
 
 </body>
