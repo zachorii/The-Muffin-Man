@@ -423,13 +423,8 @@
   let lastOrder = null;
 
   function generateOrderNumber() {
-    // Example: MM-7F3K2Q (simple + readable)
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let code = "";
-    for (let i = 0; i < 6; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return `MM-${code}`;
+    const num = Math.floor(Math.random() * 10000); // 0-9999
+    return num.toString().padStart(4, "0");
   }
 
   function openPaymentModal(orderNumber, summaryText) {
