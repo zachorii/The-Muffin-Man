@@ -527,21 +527,22 @@ Total: $${money(total)}
   const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
 
   // Build classic form-encoded payload (avoids CORS preflight issues)
-const formData = new URLSearchParams();
-formData.append("orderNumber", lastOrder.orderNumber);
-formData.append("name", lastOrder.name);
-formData.append("phone", lastOrder.phone);
-formData.append("paymentMethod", payMethod);
-formData.append("paymentHandle", payHandle);
-formData.append("orderDetails", lastOrder.summaryText);
+  const formData = new URLSearchParams();
+  formData.append("orderNumber", lastOrder.orderNumber);
+  formData.append("name", lastOrder.name);
+  formData.append("phone", lastOrder.phone);
+  formData.append("paymentMethod", payMethod);
+  formData.append("paymentHandle", payHandle);
+  formData.append("orderDetails", lastOrder.summaryText);
 
-const response = await fetch(FORM_ENDPOINT, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-  },
-  body: formData.toString()
-});
+  try {
+    const response = await fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+      },
+      body: formData.toString()
+    });
 
     if (response.ok) {
       alert("Order sent successfully! Please complete payment.");
@@ -550,6 +551,7 @@ const response = await fetch(FORM_ENDPOINT, {
     } else {
       alert("There was an issue sending the order. Please try again.");
     }
+
   } catch (error) {
     alert("Network error. Please try again.");
   }
