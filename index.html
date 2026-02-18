@@ -534,7 +534,6 @@ ${payMethod}${payHandle ? ` (${payHandle})` : ""}`;
   const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name} - ${payMethod}`);
   const body = encodeURIComponent(appended);
 
-  window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
 }
 
   // DOM-ready init: populate selects and render cart
