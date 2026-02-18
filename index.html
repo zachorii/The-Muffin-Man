@@ -510,7 +510,7 @@ Total: $${money(total)}
     openPaymentModal(orderNumber, summaryText);
   }
 
-  function sendOrderEmailFromModal() {
+  async function sendOrderEmailFromModal() {
   if (!lastOrder) return;
 
   const methodEl = document.getElementById("payMethod");
@@ -520,9 +520,41 @@ Total: $${money(total)}
   const payHandle = handleEl ? handleEl.value.trim() : "";
 
   if (!payMethod) {
-    alert("Please select how you will pay (Zelle, Cash App, or Apple Pay).");
+    alert("Please select how you will pay.");
     return;
   }
+
+  const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
+
+  const payload = {
+    orderNumber: lastOrder.orderNumber,
+    name: lastOrder.name,
+    phone: lastOrder.phone,
+    paymentMethod: payMethod,
+    paymentHandle: payHandle,
+    orderDetails: lastOrder.summaryText
+  };
+
+  try {
+    const response = await fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      alert("Order sent successfully! Please complete payment.");
+      closePaymentModal();
+      clearCart();
+    } else {
+      alert("There was an issue sending the order. Please try again.");
+    }
+  } catch (error) {
+    alert("Network error. Please try again.");
+  }
+}
 
   // Append payment info to the summary you receive
   const appended =
