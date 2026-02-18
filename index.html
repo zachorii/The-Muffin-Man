@@ -217,8 +217,8 @@
   </div>
 
 <!-- PAYMENT MODAL -->
-<div id="paymentModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); padding:16px; z-index:9999;">
-  <div style="max-width:720px; margin:60px auto; background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.25);">
+<div id="paymentModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); padding:16px; z-index:9999; overflow:auto; -webkit-overflow-scrolling:touch;">
+  <div style="max-width:720px; margin:60px auto; background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.25); max-height: calc(100vh - 120px); overflow:auto; -webkit-overflow-scrolling:touch;">
     <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
       <div>
         <h2 style="margin:0;">Payment Required</h2>
@@ -419,6 +419,7 @@
     const orderEl = document.getElementById("orderNumberText");
     const summaryEl = document.getElementById("orderSummaryText");
     const modal = document.getElementById("paymentModal");
+    document.body.style.overflow = "hidden";
     if (orderEl) orderEl.textContent = orderNumber;
     if (summaryEl) summaryEl.textContent = summaryText;
     if (modal) modal.style.display = "block";
@@ -426,6 +427,7 @@
 
   function closePaymentModal() {
     const modal = document.getElementById("paymentModal");
+    document.body.style.overflow - "";
     if (modal) modal.style.display = "none";
   }
 
@@ -509,7 +511,7 @@ Confirmation will be sent via email or text no more than 12 hours after payment.
     const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name}`);
     const body = encodeURIComponent(lastOrder.summaryText);
 
-    window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${zachorii92@gmail.com}?subject=${subject}&body=${body}`;
   }
 
   // DOM-ready init: populate selects and render cart
