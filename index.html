@@ -427,7 +427,7 @@
 
   function closePaymentModal() {
     const modal = document.getElementById("paymentModal");
-    document.body.style.overflow - "";
+    document.body.style.overflow = "";
     if (modal) modal.style.display = "none";
   }
 
@@ -458,7 +458,7 @@
 
     const name = (document.getElementById("custName") && document.getElementById("custName").value.trim()) || "—";
     const phone = (document.getElementById("custPhone") && document.getElementById("custPhone").value.trim()) || "—";
-    const notes = (document.getElementById("custNotes") && document.getElementById("custNotes").value.trim()) || "—";
+    
 
     let lines = [];
     let total = 0;
@@ -511,7 +511,7 @@ Confirmation will be sent via email or text no more than 12 hours after payment.
     const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name}`);
     const body = encodeURIComponent(lastOrder.summaryText);
 
-    window.location.href = `mailto:${zachorii92@gmail.com}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
   }
 
   // DOM-ready init: populate selects and render cart
