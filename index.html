@@ -556,18 +556,6 @@ Total: $${money(total)}
   }
 }
 
-  // Append payment info to the summary you receive
-  const appended =
-`${lastOrder.summaryText}
-
-PAYMENT METHOD SELECTED:
-${payMethod}${payHandle ? ` (${payHandle})` : ""}`;
-
-  const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name} - ${payMethod}`);
-  const body = encodeURIComponent(appended);
-
-}
-
   // DOM-ready init: populate selects and render cart
   document.addEventListener("DOMContentLoaded", () => {
     fillQty("qtySingle", 5);   // singles capped at 5
