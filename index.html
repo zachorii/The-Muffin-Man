@@ -296,7 +296,6 @@
 </div>
   
 </main>
-
 <script>
   // ---- CONFIG ----
   const YOUR_EMAIL = "zachorii92@gmail.com";
@@ -311,9 +310,11 @@
   // { type: 'half', flavor: 'Blueberry', packQty: 2 }
   let cart = [];
 
-  // Populate quantity dropdowns
+  // Populate quantity dropdowns (safe)
   function fillQty(selectId, max) {
     const el = document.getElementById(selectId);
+    if (!el) return;
+    el.innerHTML = "";
     for (let i = 1; i <= max; i++) {
       const opt = document.createElement("option");
       opt.value = i;
@@ -321,16 +322,16 @@
       el.appendChild(opt);
     }
   }
-  fillQty("qtySingle", 5);   // singles capped at 5
-  fillQty("qtyHalf", 12);
-  fillQty("qtyDozen", 12);
 
+  // money formatting
   function money(n) { return Number(n).toFixed(2).replace(/\.00$/, ""); }
 
+  // add to cart
   function addToCart(type) {
     const pack = PACKS[type];
     const flavorEl = document.getElementById(type === "single" ? "flavorSingle" : type === "half" ? "flavorHalf" : "flavorDozen");
     const qtyEl = document.getElementById(type === "single" ? "qtySingle" : type === "half" ? "qtyHalf" : "qtyDozen");
+    if (!flavorEl || !qtyEl) return;
 
     const flavor = flavorEl.value;
     const packQty = parseInt(qtyEl.value, 10);
@@ -361,6 +362,7 @@
     const totalEl = document.getElementById("cartTotal");
     const emptyText = document.getElementById("cartEmptyText");
     const cartArea = document.getElementById("cartArea");
+    if (!list || !totalEl || !emptyText || !cartArea) return;
 
     list.innerHTML = "";
 
@@ -400,70 +402,79 @@
     totalEl.textContent = money(total);
   }
 
+  // ---- Payment modal + order generation ----
   let lastOrder = null;
 
-function generateOrderNumber() {
-  // Example: MM-7F3K2Q (simple + readable)
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let code = "";
-  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-  return `MM-${code}`;
-}
-
-function openPaymentModal(orderNumber, summaryText) {
-  document.getElementById("orderNumberText").textContent = orderNumber;
-  document.getElementById("orderSummaryText").textContent = summaryText;
-  document.getElementById("paymentModal").style.display = "block";
-}
-
-function closePaymentModal() {
-  document.getElementById("paymentModal").style.display = "none";
-}
-
-async function copyText(elementId) {
-  const text = document.getElementById(elementId).textContent.trim();
-  try {
-    await navigator.clipboard.writeText(text);
-    alert("Copied!");
-  } catch {
-    // fallback
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    document.body.removeChild(ta);
-    alert("Copied!");
-  }
-}
-
-function submitOrder() {
-  if (cart.length === 0) {
-    alert("Your cart is empty. Add muffins first.");
-    return;
+  function generateOrderNumber() {
+    // Example: MM-7F3K2Q (simple + readable)
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+    for (let i = 0; i < 6; i++) {
+      code += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return `MM-${code}`;
   }
 
-  const name = document.getElementById("custName").value.trim() || "—";
-  const phone = document.getElementById("custPhone").value.trim() || "—";
-  const notes = document.getElementById("custNotes").value.trim() || "—";
+  function openPaymentModal(orderNumber, summaryText) {
+    const orderEl = document.getElementById("orderNumberText");
+    const summaryEl = document.getElementById("orderSummaryText");
+    const modal = document.getElementById("paymentModal");
+    if (orderEl) orderEl.textContent = orderNumber;
+    if (summaryEl) summaryEl.textContent = summaryText;
+    if (modal) modal.style.display = "block";
+  }
 
-  let lines = [];
-  let total = 0;
-  let totalMuffins = 0;
+  function closePaymentModal() {
+    const modal = document.getElementById("paymentModal");
+    if (modal) modal.style.display = "none";
+  }
 
-  cart.forEach(item => {
-    const pack = PACKS[item.type];
-    const muffins = item.packQty * pack.muffinsPerPack;
-    const price = item.packQty * pack.pricePerPack;
-    total += price;
-    totalMuffins += muffins;
+  async function copyText(elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const text = el.textContent.trim();
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Copied!");
+    } catch {
+      // fallback
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      alert("Copied!");
+    }
+  }
 
-    lines.push(`${item.flavor} — ${item.packQty} × ${pack.label} (${pack.muffinsPerPack}) = ${muffins} muffins — $${money(price)}`);
-  });
+  function submitOrder() {
+    if (cart.length === 0) {
+      alert("Your cart is empty. Add muffins first.");
+      return;
+    }
 
-  const orderNumber = generateOrderNumber();
+    const name = (document.getElementById("custName") && document.getElementById("custName").value.trim()) || "—";
+    const phone = (document.getElementById("custPhone") && document.getElementById("custPhone").value.trim()) || "—";
+    const notes = (document.getElementById("custNotes") && document.getElementById("custNotes").value.trim()) || "—";
 
-  const summaryText =
+    let lines = [];
+    let total = 0;
+    let totalMuffins = 0;
+
+    cart.forEach(item => {
+      const pack = PACKS[item.type];
+      const muffins = item.packQty * pack.muffinsPerPack;
+      const price = item.packQty * pack.pricePerPack;
+      total += price;
+      totalMuffins += muffins;
+
+      lines.push(`${item.flavor} — ${item.packQty} × ${pack.label} (${pack.muffinsPerPack}) = ${muffins} muffins — $${money(price)}`);
+    });
+
+    const orderNumber = generateOrderNumber();
+
+    const summaryText =
 `Order #: ${orderNumber}
 
 Customer: ${name}
@@ -488,58 +499,28 @@ Orders must be placed and paid before Wednesday 7am.
 Confirmation will be sent via email or text no more than 12 hours after payment.
 `;
 
-  lastOrder = { orderNumber, name, phone, notes, summaryText };
-  openPaymentModal(orderNumber, summaryText);
-}
+    lastOrder = { orderNumber, name, phone, notes, summaryText };
+    openPaymentModal(orderNumber, summaryText);
+  }
 
-    const name = document.getElementById("custName").value.trim() || "—";
-    const phone = document.getElementById("custPhone").value.trim() || "—";
-    const notes = document.getElementById("custNotes").value.trim() || "—";
+  function sendOrderEmailFromModal() {
+    if (!lastOrder) return;
 
-    let lines = [];
-    let total = 0;
-    let totalMuffins = 0;
-
-    cart.forEach(item => {
-      const pack = PACKS[item.type];
-      const muffins = item.packQty * pack.muffinsPerPack;
-      const price = item.packQty * pack.pricePerPack;
-      total += price;
-      totalMuffins += muffins;
-
-      lines.push(`${item.flavor} — ${item.packQty} × ${pack.label} (${pack.muffinsPerPack}) = ${muffins} muffins — $${money(price)}`);
-    });
-
-    const subject = encodeURIComponent(`Muffin Order - ${name}`);
-    const body = encodeURIComponent(
-`Customer: ${name}
-Phone: ${phone}
-
-Order:
-${lines.join("\n")}
-
-Total muffins: ${totalMuffins}
-Total: $${money(total)}
-
-Notes:
-${notes}`
-    );
+    const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name}`);
+    const body = encodeURIComponent(lastOrder.summaryText);
 
     window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
   }
 
-  renderCart();
-
-function sendOrderEmailFromModal() {
-  if (!lastOrder) return;
-
-  const subject = encodeURIComponent(`Muffin Order ${lastOrder.orderNumber} - ${lastOrder.name}`);
-  const body = encodeURIComponent(lastOrder.summaryText);
-
-  window.location.href = `mailto:${YOUR_EMAIL}?subject=${subject}&body=${body}`;
-}
-  
+  // DOM-ready init: populate selects and render cart
+  document.addEventListener("DOMContentLoaded", () => {
+    fillQty("qtySingle", 5);   // singles capped at 5
+    fillQty("qtyHalf", 12);
+    fillQty("qtyDozen", 12);
+    renderCart();
+  });
 </script>
+
 
 </body>
 </html>
