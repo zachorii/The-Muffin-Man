@@ -67,6 +67,9 @@ body{
   align-items:center;
   padding: 28px 0;
   border-bottom: 1px solid rgba(0,0,0,.06);
+
+  /* NEW: avoid any clipping/overlap weirdness */
+  overflow: visible;
 }
 
 /* Alternate layout like Crumbl */
@@ -75,6 +78,22 @@ body{
 }
 .item:nth-child(even) .item__media{ order: 2; }
 .item:nth-child(even) .item__text{ order: 1; }
+
+/* NEW: protect text column so it can't collapse */
+.item__text{
+  min-width: 260px;
+  justify-self: start;
+}
+
+/* NEW: keep text aligned consistently */
+.item:nth-child(even) .item__text{
+  text-align: left;
+  justify-self: start;
+}
+.item:nth-child(odd) .item__text{
+  text-align: left;
+  justify-self: start;
+}
 
 .item__media{
   display:flex;
@@ -141,5 +160,9 @@ h2{
   }
   .item:nth-child(even) .item__media{ order: 1; }
   .item:nth-child(even) .item__text{ order: 2; }
+
+  /* NEW: min-width doesn't matter on 1-col, but doesn't hurt */
+  .item__text{ min-width: 0; }
+
   h2{ font-size: 36px; }
 }
