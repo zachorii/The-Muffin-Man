@@ -176,66 +176,56 @@ h2{
 /* MOBILE FIXES */
 @media (max-width: 768px){
 
-  /* Stop sideways scrolling */
   html, body{
     width: 100%;
     overflow-x: hidden;
   }
 
-  /* Make all sections/containers not exceed screen */
   .wrap, .container, main, section{
     max-width: 100%;
   }
 
-  /* Images should scale down cleanly */
   img{
     max-width: 100%;
     height: auto;
   }
 
-  /* Reduce giant padding that can squeeze content */
+  h1{ font-size: clamp(28px, 7vw, 40px); }
+  h2{ font-size: clamp(20px, 5.5vw, 28px); }
+  p, li{ font-size: 16px; line-height: 1.45; }
+
   .section, .card, .menu, .block{
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
 
-  /* Make text comfortable on small screens */
-  h1{ font-size: clamp(28px, 7vw, 40px); }
-  h2{ font-size: clamp(20px, 5.5vw, 28px); }
-  p, li{ font-size: 16px; line-height: 1.45; }
-
-  /* IMPORTANT:
-     Each menu item needs to be a positioning container
-     and clip the muffin overflow */
-  .menu-item, .menu-card, .muffin-row, .menu-row, .product, .item{
+  /* Each muffin card acts independently */
+  .menu-item, .menu-card, .product, .item{
     position: relative;
     overflow: hidden;
+    padding-top: 140px; /* creates space for muffin above text */
   }
 
-  /* Let the text take the full width */
-  .menu-row, .menu-item, .muffin-row,
-  .menu-card, .product, .item{
-    display: block; /* we don't want grid forcing a stacked layout */
-  }
-
-  /* Take muffin OUT of layout and push it off-screen */
+  /* Muffin positioning */
   .muffin, .muffin-img, .muffinPhoto{
     position: absolute !important;
-    right: -160px !important;  /* more negative = more off screen */
-    top: -60px !important;     /* adjust up/down */
-    width: 320px !important;   /* size of muffin on mobile */
+    right: -160px !important;
+    top: -40px !important;
+    width: 320px !important;
     max-width: none !important;
-    height: auto !important;
-
     transform: none !important;
     margin: 0 !important;
     z-index: 0;
     pointer-events: none;
   }
 
-  /* Make sure text sits ABOVE the muffin */
-  .menu-item > *, .menu-card > *, .product > *, .item > *{
+  /* Text always above muffin */
+  .menu-item > *, 
+  .menu-card > *, 
+  .product > *, 
+  .item > *{
     position: relative;
     z-index: 2;
   }
+
 }
