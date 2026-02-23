@@ -200,7 +200,7 @@ h2{
   .item__media{
     order: 2;
     width: 120px !important;
-    justify-self: end !important;
+    justify-self: center !important;
   }
 
   /* BIGGER muffin image */
