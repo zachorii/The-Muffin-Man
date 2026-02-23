@@ -182,7 +182,7 @@ h2{
   /* each item becomes a simple 2-col row */
   .item{
     display: grid !important;
-    grid-template-columns: 1fr 120px !important; /* text | muffin */
+    grid-template-columns: 1fr 200px !important; /* text | muffin */
     align-items: center !important;
     gap: 14px !important;
 
@@ -193,19 +193,19 @@ h2{
   /* text stays readable */
   .item__text{
     order: 1;
-    width: 100%;
+    width: 70%;
   }
 
   /* image column */
   .item__media{
     order: 2;
-    width: 120px !important;
+    width: 200px !important;
     justify-self: center !important;
   }
 
   /* BIGGER muffin image */
   .item__media img{
-    width: 120px !important;
+    width: 200px !important;
     height: auto !important;
     max-width: none !important; /* beats global img rules */
     display: block;
