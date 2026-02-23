@@ -211,7 +211,8 @@ h2{
     position: absolute !important;
     right: -160px !important;
     top: -40px !important;
-    width: 320px !important;
+    width: 420px !important;
+    height: auto !important;
     max-width: none !important;
     transform: none !important;
     margin: 0 !important;
