@@ -212,13 +212,13 @@ h2{
 
   /* Odd items: muffin off the LEFT */
   .item:nth-child(odd) .item__media{
-    left: -32vw !important;
+    left: -28vw !important;
     right: auto !important;
   }
 
   /* Even items: muffin off the RIGHT */
   .item:nth-child(even) .item__media{
-    right: -32vw !important;
+    right: -28vw !important;
     left: auto !important;
   }
 
