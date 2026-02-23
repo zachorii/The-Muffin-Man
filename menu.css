@@ -173,60 +173,49 @@ h2{
 }
 .sticky-spacer{ height: 110px; }
 
-/* PORTRAIT MOBILE: big hero muffins, text has room */
-@media (max-width: 768px) and (orientation: portrait){
+/* CLEAN MOBILE LAYOUT (start over) */
+@media (max-width: 768px){
 
-  /* Make each card its own stage */
+  /* prevent sideways scroll */
+  html, body { overflow-x: hidden; }
+
+  /* each item becomes a simple 2-col row */
   .item{
-    position: relative;
+    display: grid !important;
+    grid-template-columns: 1fr 120px !important; /* text | muffin */
+    align-items: center !important;
+    gap: 14px !important;
+
+    padding: 18px 16px !important;
     overflow: hidden;
-    padding-top: 170px;          /* space for muffin */
-    padding-bottom: 28px;
   }
 
-  /* Text always full width and above image */
+  /* text stays readable */
   .item__text{
+    order: 1;
     width: 100%;
-    position: relative;
-    z-index: 2;
   }
 
-  /* Keep your alternating text alignment (optional) */
-  .item:nth-child(odd) .item__text{
-    text-align: left;
+  /* image column */
+  .item__media{
+    order: 2;
+    width: 120px !important;
+    justify-self: end !important;
   }
+
+  /* BIGGER muffin image */
+  .item__media img{
+    width: 120px !important;
+    height: auto !important;
+    max-width: none !important; /* beats global img rules */
+    display: block;
+  }
+
+  /* alternating alignment only (no layout changes) */
   .item:nth-child(even) .item__text{
     text-align: right;
   }
-
-  /* Take the muffin OUT of layout and make it big */
-  .item__media{
-    position: absolute !important;
-    top: -8vw !important;
-    width: 76vw !important;      /* big on portrait */
-    max-width: none !important;
-    height: auto !important;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* Odd items: muffin off the LEFT */
-  .item:nth-child(odd) .item__media{
-    left: -28vw !important;
-    right: auto !important;
-  }
-
-  /* Even items: muffin off the RIGHT */
-  .item:nth-child(even) .item__media{
-    right: -28vw !important;
-    left: auto !important;
-  }
-
-  /* Force the actual <img> to fill the big wrapper */
-  .item__media img{
-    width: 100% !important;
-    max-width: none !important;  /* defeats global img { max-width:100% } */
-    height: auto !important;
-    display: block;
+  .item:nth-child(odd) .item__text{
+    text-align: left;
   }
 }
