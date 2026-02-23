@@ -93,7 +93,7 @@ html, body{
   justify-self: start;
 }
 .item:nth-child(odd) .item__text{
-  text-align: left;
+  text-align: right;
   justify-self: start;
 }
 
