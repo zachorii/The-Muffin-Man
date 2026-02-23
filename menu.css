@@ -213,7 +213,7 @@ h2{
 
   /* alternating alignment only (no layout changes) */
   .item:nth-child(even) .item__text{
-    text-align: right;
+    text-align: left;
   }
   .item:nth-child(odd) .item__text{
     text-align: left;
