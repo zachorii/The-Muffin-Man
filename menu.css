@@ -173,4 +173,47 @@ h2{
 }
 .sticky-spacer{ height: 110px; }
 
+/* --- PORTRAIT MOBILE ONLY: make muffins big like landscape --- */
+@media (max-width: 768px) and (orientation: portrait){
+
+  /* each card becomes the positioning container */
+  .item{
+    position: relative;
+    overflow: hidden;
+    min-height: 220px; /* gives room for the muffin + text */
+  }
+
+  /* make text full width so it doesn't constrain anything */
+  .item__text{
+    width: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* right-align odd items, but don't mess with sizing */
+  .item:nth-child(odd) .item__text{
+    text-align: right;
+    justify-self: end;
+  }
+
+  /* the muffin wrapper gets big */
+  .item__img{
+    position: absolute !important;
+    right: -28vw !important;   /* push off screen */
+    top: -6vw !important;
+    width: 72vw !important;    /* BIG on portrait */
+    max-width: none !important;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* force the ACTUAL IMG to fill wrapper (this is the key) */
+  .item__img img{
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    display: block;
+  }
+}
+
 
