@@ -173,30 +173,57 @@ h2{
 }
 .sticky-spacer{ height: 110px; }
 
-/* Mobile */
-@media (max-width: 820px){
-  .item{
-    grid-template-columns: 1fr;
-    gap: 14px;
+/* MOBILE FIXES */
+@media (max-width: 768px){
+
+  /* Stop sideways scrolling */
+  html, body{
+    width: 100%;
+    overflow-x: hidden;
   }
-  .item:nth-child(even) .item__media{ order: 1; }
-  .item:nth-child(even) .item__text{ order: 2; }
 
-  .item{
-  overflow: hidden;
-}
-.item__media{
-  min-height: 220px;
-}
-.item:nth-child(odd) .item__media img{
-  transform: translateX(-28%);
-}
-.item:nth-child(even) .item__media img{
-  transform: translateX(28%);
-}
-  
-  /* NEW: min-width doesn't matter on 1-col, but doesn't hurt */
-  .item__text{ min-width: 0; }
+  /* Make all sections/containers not exceed screen */
+  .wrap, .container, main, section{
+    max-width: 100%;
+  }
 
-  h2{ font-size: 36px; }
+  /* Images should scale down cleanly */
+  img{
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* If your menu items are laid out side-by-side, stack them */
+  .menu-row, .menu-item, .muffin-row{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* If you have a “image + text” split layout, stack it */
+  .menu-card, .product, .item{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  /* If muffin art is positioned/translated, neutralize on mobile */
+  .muffin, .muffin-img, .muffinPhoto{
+    position: relative;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin: 0 auto;
+  }
+
+  /* Make text comfortable on small screens */
+  h1{ font-size: clamp(28px, 7vw, 40px); }
+  h2{ font-size: clamp(20px, 5.5vw, 28px); }
+  p, li{ font-size: 16px; line-height: 1.45; }
+
+  /* Reduce giant padding that can squeeze content */
+  .section, .card, .menu, .block{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }
