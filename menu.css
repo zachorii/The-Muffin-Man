@@ -173,47 +173,60 @@ h2{
 }
 .sticky-spacer{ height: 110px; }
 
-/* --- PORTRAIT MOBILE ONLY: make muffins big like landscape --- */
+/* PORTRAIT MOBILE: big hero muffins, text has room */
 @media (max-width: 768px) and (orientation: portrait){
 
-  /* each card becomes the positioning container */
+  /* Make each card its own stage */
   .item{
     position: relative;
     overflow: hidden;
-    min-height: 220px; /* gives room for the muffin + text */
+    padding-top: 170px;          /* space for muffin */
+    padding-bottom: 28px;
   }
 
-  /* make text full width so it doesn't constrain anything */
+  /* Text always full width and above image */
   .item__text{
     width: 100%;
     position: relative;
     z-index: 2;
   }
 
-  /* right-align odd items, but don't mess with sizing */
+  /* Keep your alternating text alignment (optional) */
   .item:nth-child(odd) .item__text{
+    text-align: left;
+  }
+  .item:nth-child(even) .item__text{
     text-align: right;
-    justify-self: end;
   }
 
-  /* the muffin wrapper gets big */
-  .item__img{
+  /* Take the muffin OUT of layout and make it big */
+  .item__media{
     position: absolute !important;
-    right: -28vw !important;   /* push off screen */
-    top: -6vw !important;
-    width: 72vw !important;    /* BIG on portrait */
+    top: -8vw !important;
+    width: 76vw !important;      /* big on portrait */
     max-width: none !important;
+    height: auto !important;
     z-index: 0;
     pointer-events: none;
   }
 
-  /* force the ACTUAL IMG to fill wrapper (this is the key) */
-  .item__img img{
+  /* Odd items: muffin off the LEFT */
+  .item:nth-child(odd) .item__media{
+    left: -32vw !important;
+    right: auto !important;
+  }
+
+  /* Even items: muffin off the RIGHT */
+  .item:nth-child(even) .item__media{
+    right: -32vw !important;
+    left: auto !important;
+  }
+
+  /* Force the actual <img> to fill the big wrapper */
+  .item__media img{
     width: 100% !important;
-    max-width: none !important;
+    max-width: none !important;  /* defeats global img { max-width:100% } */
     height: auto !important;
     display: block;
   }
 }
-
-
