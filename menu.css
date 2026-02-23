@@ -94,7 +94,7 @@ html, body{
 }
 .item:nth-child(odd) .item__text{
   text-align: right;
-  justify-self: start;
+  justify-self: end;
 }
 
 .item__media{
