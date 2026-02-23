@@ -193,27 +193,10 @@ h2{
     height: auto;
   }
 
-  /* If your menu items are laid out side-by-side, stack them */
-  .menu-row, .menu-item, .muffin-row{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  /* If you have a “image + text” split layout, stack it */
-  .menu-card, .product, .item{
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-
-  /* If muffin art is positioned/translated, neutralize on mobile */
-  .muffin, .muffin-img, .muffinPhoto{
-    position: relative;
-    left: 0 !important;
-    right: 0 !important;
-    transform: none !important;
-    margin: 0 auto;
+  /* Reduce giant padding that can squeeze content */
+  .section, .card, .menu, .block{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   /* Make text comfortable on small screens */
@@ -221,9 +204,38 @@ h2{
   h2{ font-size: clamp(20px, 5.5vw, 28px); }
   p, li{ font-size: 16px; line-height: 1.45; }
 
-  /* Reduce giant padding that can squeeze content */
-  .section, .card, .menu, .block{
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+  /* IMPORTANT:
+     Each menu item needs to be a positioning container
+     and clip the muffin overflow */
+  .menu-item, .menu-card, .muffin-row, .menu-row, .product, .item{
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Let the text take the full width */
+  .menu-row, .menu-item, .muffin-row,
+  .menu-card, .product, .item{
+    display: block; /* we don't want grid forcing a stacked layout */
+  }
+
+  /* Take muffin OUT of layout and push it off-screen */
+  .muffin, .muffin-img, .muffinPhoto{
+    position: absolute !important;
+    right: -160px !important;  /* more negative = more off screen */
+    top: -60px !important;     /* adjust up/down */
+    width: 320px !important;   /* size of muffin on mobile */
+    max-width: none !important;
+    height: auto !important;
+
+    transform: none !important;
+    margin: 0 !important;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Make sure text sits ABOVE the muffin */
+  .menu-item > *, .menu-card > *, .product > *, .item > *{
+    position: relative;
+    z-index: 2;
   }
 }
