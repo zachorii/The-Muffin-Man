@@ -202,16 +202,17 @@ h2{
 
   /* Media becomes the "crop box" */
   .item__media{
-    height: 190px;      /* tweak 170–220 */
-    overflow: hidden;
-    z-index: 1;
+    height: auto;      /* tweak 170–220 */
+    overflow: visible;
+    align-items: center;
   }
 
   /* IMPORTANT: no vw widths inside a grid column on mobile */
   .item__media img{
-    width: 140%;        /* bleed within its column */
-    max-width: none;
-    height: auto;
+    width: 100%;        /* bleed within its column */
+    max-width: 100%;
+    transform: none;
+    filter: drop-shadow(0 14px 18px rgba(0,0,0,.18));
   }
 
   /* Smaller push so it doesn't shove layout */
