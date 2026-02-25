@@ -173,3 +173,53 @@ h2{
 }
 .sticky-spacer{ height: 110px; }
 
+/* ---------- Mobile: same look, just smaller ---------- */
+@media (max-width: 720px){
+
+  :root{ --pad: 14px; }
+
+  .brand{ font-size: 20px; }
+
+  .menu{
+    padding: 10px var(--pad) 110px;
+  }
+
+  /* Keep 2 columns, but make the text column smaller */
+  .item{
+    grid-template-columns: 0.78fr 1.22fr; /* image | text (odd items) */
+    gap: 10px;
+    padding: 18px 0;
+  }
+
+  /* Even items still swap media/text like you already do */
+  .item:nth-child(even){
+    grid-template-columns: 1.22fr 0.78fr; /* text | image visually after ordering */
+  }
+
+  /* Let text shrink without breaking layout */
+  .item__text{
+    min-width: 0;          /* IMPORTANT on mobile */
+    max-width: 100%;
+  }
+
+  /* Smaller type so it fits */
+  h2{ font-size: 26px; line-height: 1.1; }
+  .sub{ font-size: 14.5px; }
+
+  /* Smaller “stage” so rows aren’t huge */
+  .item__media{
+    min-height: 0;
+    height: 190px;         /* tweak 170–220 */
+  }
+
+  /* Make image big enough to still bleed, but not massive */
+  .item__media img{
+    width: min(360px, 95vw);
+    max-width: none;
+  }
+
+  /* Reduce the push so it doesn't shove off-screen */
+  .item:nth-child(odd) .item__media img{ transform: translateX(-12%); }
+  .item:nth-child(even) .item__media img{ transform: translateX(12%); }
+}
+
