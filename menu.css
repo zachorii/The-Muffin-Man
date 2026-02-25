@@ -71,7 +71,7 @@ html, body{
   align-items:center;
   padding: 8px 0;
   border-bottom: 1px solid rgba(0,0,0,.06);
-  overflow: hidden; /* KEY: crops the muffin */
+  overflow: visible; /* KEY: crops the muffin */
 }
 
 /* Alternate layout like Crumbl */
@@ -104,6 +104,7 @@ html, body{
   /* let the image bleed out of the container */
   width: 100%;
   min-height: 0;
+  overflow: hidden;
 }
 
 .item__media img{
