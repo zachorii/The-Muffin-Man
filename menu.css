@@ -41,23 +41,6 @@ html, body{
   font-size: 28px;
 }
 
-.hamburger{
-  position:absolute;
-  left: var(--pad);
-  width:44px; height:44px;
-  border:0;
-  background: transparent;
-  display:grid;
-  gap:6px;
-  padding:10px;
-}
-.hamburger span{
-  display:block;
-  height:2px;
-  background:#fff;
-  border-radius: 2px;
-}
-
 .menu{
   max-width: var(--max);
   margin: 0 auto;
