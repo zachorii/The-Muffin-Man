@@ -174,53 +174,50 @@ h2{
 }
 .sticky-spacer{ height: 110px; }
 
-/* ---------- Mobile: same look, just smaller ---------- */
+/* ---------- Mobile: keep 2-column look without losing text ---------- */
 @media (max-width: 720px){
 
-  :root{ --pad: 14px; }
-
-  .brand{ font-size: 20px; }
-
-  .menu{
-    padding: 10px var(--pad) 110px;
-  }
-
-  /* Keep 2 columns, but make the text column smaller */
   .item{
-    grid-template-columns: 0.78fr 1.22fr; /* image | text (odd items) */
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
     gap: 10px;
     padding: 18px 0;
   }
 
-  /* Even items still swap media/text like you already do */
+  /* Even items: same swap */
   .item:nth-child(even){
-    grid-template-columns: 1.22fr 0.78fr; /* text | image visually after ordering */
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
   }
 
-  /* Let text shrink without breaking layout */
+  /* CRITICAL: allow both columns to actually shrink */
+  .item__media,
   .item__text{
-    min-width: 0;          /* IMPORTANT on mobile */
-    max-width: 100%;
+    min-width: 0;
   }
 
-  /* Smaller type so it fits */
+  /* Make text always render on top and stay inside */
+  .item__text{
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Media becomes the "crop box" */
+  .item__media{
+    height: 190px;      /* tweak 170–220 */
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* IMPORTANT: no vw widths inside a grid column on mobile */
+  .item__media img{
+    width: 140%;        /* bleed within its column */
+    max-width: none;
+    height: auto;
+  }
+
+  /* Smaller push so it doesn't shove layout */
+  .item:nth-child(odd) .item__media img{ transform: translateX(-10%); }
+  .item:nth-child(even) .item__media img{ transform: translateX(10%); }
+
   h2{ font-size: 26px; line-height: 1.1; }
   .sub{ font-size: 14.5px; }
-
-  /* Smaller “stage” so rows aren’t huge */
-  .item__media{
-    min-height: 0;
-    height: 190px;         /* tweak 170–220 */
-  }
-
-  /* Make image big enough to still bleed, but not massive */
-  .item__media img{
-    width: min(360px, 95vw);
-    max-width: none;
-  }
-
-  /* Reduce the push so it doesn't shove off-screen */
-  .item:nth-child(odd) .item__media img{ transform: translateX(-12%); }
-  .item:nth-child(even) .item__media img{ transform: translateX(12%); }
 }
-
