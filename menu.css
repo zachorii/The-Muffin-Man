@@ -215,9 +215,10 @@ h2{
     filter: drop-shadow(0 14px 18px rgba(0,0,0,.18));
   }
 
-  /* Smaller push so it doesn't shove layout */
-  .item:nth-child(odd) .item__media img{ transform: translateX(-10%); }
-  .item:nth-child(even) .item__media img{ transform: translateX(10%); }
+  @media (max-width: 720px){
+  .item:nth-child(odd) .item__media{ justify-content: flex-start; }
+  .item:nth-child(even) .item__media{ justify-content: flex-end; }
+}
 
   h2{ font-size: 26px; line-height: 1.1; }
   .sub{ font-size: 14.5px; }
