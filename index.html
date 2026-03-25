@@ -118,31 +118,6 @@
     margin: 20px 0;
   }
 
-  .menu-list{
-    display: grid;
-    gap: 12px;
-    margin-top: 12px;
-  }
-
-  .menu-line{
-    padding: 12px 14px;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    background: #fff;
-  }
-
-  .menu-line strong{
-    display: block;
-    margin-bottom: 4px;
-    font-size: 16px;
-  }
-
-  .menu-line span{
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
   .builder{
     display:grid;
     gap: 14px;
@@ -331,7 +306,7 @@
     display:flex;
     gap:10px;
     flex-wrap: wrap;
-    margin-top: 16px;
+    margin-bottom: 18px;
   }
 
   .menu-link{
@@ -339,11 +314,23 @@
     align-items:center;
     justify-content:center;
     text-decoration:none;
-    padding: 12px 14px;
+    padding: 12px 18px;
     border-radius: 999px;
     background:#111;
     color:#fff;
     font-weight: 800;
+  }
+
+  .menu-link:hover{
+    opacity: .95;
+  }
+
+  .order-top{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
   }
 
   /* Modal */
@@ -396,10 +383,6 @@
     padding: 14px;
   }
 
-  .modal-card strong{
-    font-weight: 900;
-  }
-
   .pay-list{
     display:grid;
     gap:10px;
@@ -449,6 +432,14 @@
       font-size: 26px;
     }
 
+    .order-top{
+      align-items: stretch;
+    }
+
+    .menu-link{
+      width: 100%;
+    }
+
     .modal__dialog{
       margin: 20px auto;
       padding: 16px;
@@ -476,63 +467,24 @@
 <main>
   <section class="hero">
     <h1>Build Your Order</h1>
-    <p>Small-batch muffins made with fresh fruit and bold flavors. Add your muffins to the cart below, then submit one order.</p>
+    <p>Add your muffins to the cart below, then submit one order.</p>
   </section>
 
   <div class="grid">
     <!-- LEFT COLUMN -->
     <div class="card">
-      <h2 class="section-title">Menu</h2>
-      <p class="muted">Choose your flavor, then add singles, half dozens, or dozens to your cart.</p>
-
-      <div class="menu-list">
-        <div class="menu-line">
-          <strong>Blueberry Cinnamon</strong>
-          <span>Sweet blueberry muffin with cinnamon crumble.</span>
+      <div class="order-top">
+        <div>
+          <h2 class="section-title">Build Your Order</h2>
+          <p class="muted">Add multiple flavors and pack sizes. Each cart line is one flavor.</p>
         </div>
 
-        <div class="menu-line">
-          <strong>Strawberry Lemon</strong>
-          <span>Muffin with ripe strawberries and lemon crumble.</span>
-        </div>
-
-        <div class="menu-line">
-          <strong>Orange Creamsicle</strong>
-          <span>Orange flavored muffin with white chocolate chips, topped with citrus crumble and creamy glaze.</span>
-        </div>
-
-        <div class="menu-line">
-          <strong>Double Chocolate</strong>
-          <span>Chocolate muffin with milk and dark chocolate chunks topped by espresso crumble.</span>
-        </div>
-
-        <div class="menu-line">
-          <strong>White Chocolate Cherry</strong>
-          <span>Muffin with black cherries and white chocolate chips.</span>
-        </div>
-
-        <div class="menu-line">
-          <strong>Chocolate Raspberry</strong>
-          <span>Chocolate muffin with tart raspberries and cocoa crumble.</span>
-        </div>
-
-        <div class="menu-line">
-          <strong>Cookies &amp; Cream</strong>
-          <span>Chocolate muffin with cookie bits and white cream chips topped with cookie crumble and cream filling glaze.</span>
-        </div>
-      </div>
-
-      <div class="link-row">
-        <a class="menu-link" href="menu.html">View Full Menu Page</a>
+        <a class="menu-link" href="menu.html">Menu</a>
       </div>
 
       <div class="divider"></div>
 
-      <h2 class="section-title">Build Your Order</h2>
-      <p class="muted">Add multiple flavors and pack sizes. Each cart line is one flavor.</p>
-
       <div class="builder">
-        <!-- PACK 1: SINGLE -->
         <div class="pack">
           <div class="pack-title">
             <strong>Single Muffin</strong>
@@ -564,7 +516,6 @@
           </p>
         </div>
 
-        <!-- PACK 2: HALF DOZEN -->
         <div class="pack">
           <div class="pack-title">
             <strong>Half Dozen (6)</strong>
@@ -593,7 +544,6 @@
           <button type="button" onclick="addToCart('half')">Add Half Dozens</button>
         </div>
 
-        <!-- PACK 3: DOZEN -->
         <div class="pack">
           <div class="pack-title">
             <strong>Dozen (12)</strong>
@@ -657,13 +607,12 @@
         <button class="secondary" type="button" onclick="clearCart()">Clear Cart</button>
 
         <p class="muted">
-          Orders are submitted through the site. Payment is selected in the confirmation popup.
+          Payment is selected in the confirmation popup after you submit your order.
         </p>
       </div>
     </div>
   </div>
 
-  <!-- PAYMENT MODAL -->
   <div id="paymentModal" class="modal">
     <div class="modal__dialog">
       <div class="modal__top">
