@@ -6,95 +6,530 @@
 <title>The Muffin Man</title>
 
 <style>
-  body { margin:0; font-family: Arial, sans-serif; background:#faf6f1; color:#333; }
-  header { background:#b34b4b; color:#fff; text-align:center; padding:36px 16px; }
-  h1 { margin:0; font-size:38px; }
-  header p { margin:8px 0 0; opacity:.9; }
-  main { max-width: 980px; margin: 0 auto; padding: 24px 16px 60px; }
-
-  .grid { display:grid; grid-template-columns: 1fr; gap: 16px; }
-  @media (min-width: 860px) { .grid { grid-template-columns: 1.2fr .8fr; } }
-
-  .card {
-    background:#fff; border-radius:12px; padding:18px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  :root{
+    --accent: #b34b4b;
+    --text: #101010;
+    --muted: #666;
+    --bg: #ffffff;
+    --card: #ffffff;
+    --line: rgba(0,0,0,.08);
+    --soft: #faf7f7;
+    --shadow: 0 10px 28px rgba(0,0,0,.08);
+    --radius: 20px;
+    --max: 1100px;
+    --pad: 20px;
   }
 
-  h2 { margin:0 0 10px; }
-  .muted { color:#666; margin: 6px 0 0; }
+  *{ box-sizing:border-box; }
 
-  .menu p { margin:8px 0; }
-
-  .builder { display:grid; gap: 12px; }
-  .pack {
-    border: 1px solid #e6e6e6; border-radius: 12px; padding: 14px;
-    display:grid; gap: 10px; background:#fff;
-  }
-  .pack-title { display:flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-  .pill { font-size: 16px; font-weight: 900; background:#b34b4b; color: #fff; padding: 8px 16px; border-radius: 999px; }
-
-  label { font-weight: 700; font-size: 13px; }
-  .row { display:grid; grid-template-columns: 1fr 160px; gap: 10px; }
-  @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
-
-  select, input, textarea {
-    width:100%; padding:10px 12px; border-radius:10px;
-    border:1px solid #d4d4d4; font: inherit; background:#fff;
+  html, body{
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
   }
 
-  button {
-    padding: 10px 12px; border-radius: 10px; border: none;
-    background:#b34b4b; color:#fff; font-weight: 800; cursor: pointer;
+  body{
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
   }
-  button:hover { background:#6a3f3f; }
-  button.secondary { background:#f3f3f3; color:#111; border:1px solid #ddd; }
-  button.secondary:hover { background:#ededed; }
 
-  .cart-list { margin: 0; padding-left: 18px; }
-  .cart-item { display:flex; justify-content: space-between; gap: 12px; margin: 8px 0; }
-  .cart-item small { color:#666; display:block; }
-  .cart-actions { display:flex; gap: 8px; align-items:center; }
-  .remove-btn {
-    background:#fff; color:#b34b4b; border:1px solid #b34b4b;
-    padding: 6px 10px; border-radius: 10px; font-weight: 800;
+  body.modal-open{
+    overflow: hidden;
   }
-  .remove-btn:hover { background:#faf6f1; }
 
-  .total { font-size: 18px; font-weight: 900; }
-  .divider { height:1px; background:#eee; margin: 14px 0; }
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px var(--pad);
+    border-bottom: 1px solid var(--line);
+  }
 
-  .notice {
-    background:#fff7e8; border:1px solid #f2d7ad; padding: 10px 12px;
-    border-radius: 12px; color:#7a4f00; margin-top: 12px;
+  .topbar__banner{
+    display: block;
+    width: min(100%, 520px);
+    height: auto;
+  }
+
+  main{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 18px var(--pad) 60px;
+  }
+
+  .hero{
+    text-align: center;
+    margin: 8px 0 24px;
+  }
+
+  .hero h1{
+    margin: 0;
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.05;
+  }
+
+  .hero p{
+    margin: 10px auto 0;
+    color: var(--muted);
+    font-size: 16px;
+    max-width: 700px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  @media (min-width: 860px){
+    .grid{
+      grid-template-columns: 1.15fr .85fr;
+      align-items: start;
+    }
+  }
+
+  .card{
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .section-title{
+    margin: 0 0 8px;
+    font-size: 32px;
+    line-height: 1.05;
+  }
+
+  .muted{
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .divider{
+    height: 1px;
+    background: var(--line);
+    margin: 20px 0;
+  }
+
+  .menu-list{
+    display: grid;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .menu-line{
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  .menu-line strong{
+    display: block;
+    margin-bottom: 4px;
+    font-size: 16px;
+  }
+
+  .menu-line span{
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .builder{
+    display:grid;
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .pack{
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 16px;
+    display:grid;
+    gap: 12px;
+    background: #fff;
+  }
+
+  .pack-title{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pack-title strong{
+    font-size: 18px;
+  }
+
+  .pill{
+    display:inline-block;
+    background: rgba(179,75,75,.16);
+    color: var(--accent);
+    font-weight: 800;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  label{
+    display:block;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .row{
+    display:grid;
+    grid-template-columns: 1fr 160px;
+    gap: 10px;
+  }
+
+  @media (max-width: 520px){
+    .row{
+      grid-template-columns: 1fr;
+    }
+  }
+
+  select, input, textarea{
+    width:100%;
+    padding:12px 13px;
+    border-radius: 12px;
+    border: 1px solid #d8d8d8;
+    font: inherit;
+    background:#fff;
+    color: var(--text);
+    outline: none;
+  }
+
+  select:focus, input:focus, textarea:focus{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(179,75,75,.12);
+  }
+
+  button{
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color:#fff;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform .06s ease, opacity .2s ease, background .2s ease;
+  }
+
+  button:hover{
+    opacity: .95;
+  }
+
+  button:active{
+    transform: translateY(1px);
+  }
+
+  button.secondary{
+    background:#f3f3f3;
+    color:#111;
+    border:1px solid #ddd;
+  }
+
+  button.secondary:hover{
+    background:#ececec;
+  }
+
+  .helper{
+    font-size:12px;
+    color:#777;
+    margin:0;
+  }
+
+  .helper strong{
+    color: var(--accent);
+  }
+
+  .notice{
+    background:#faf7f7;
+    border:1px solid rgba(179,75,75,.15);
+    padding: 12px 14px;
+    border-radius: 14px;
+    color:#6f4040;
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .cart-empty{
+    color: var(--muted);
+  }
+
+  .cart-list{
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+
+  .cart-item{
+    display:flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  .cart-item small{
+    color:#666;
+    display:block;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  .cart-actions{
+    display:flex;
+    gap: 8px;
+    align-items:center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .remove-btn{
+    background:#fff;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    padding: 7px 10px;
+    border-radius: 10px;
+    font-weight: 800;
+  }
+
+  .remove-btn:hover{
+    background:#faf6f6;
+  }
+
+  .total{
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .form-grid{
+    display:grid;
+    gap: 12px;
+  }
+
+  .link-row{
+    display:flex;
+    gap:10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .menu-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    padding: 12px 14px;
+    border-radius: 999px;
+    background:#111;
+    color:#fff;
+    font-weight: 800;
+  }
+
+  /* Modal */
+  .modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    padding:16px;
+    z-index:9999;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .modal__dialog{
+    max-width: 760px;
+    margin: 50px auto;
+    background:#fff;
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    padding: 20px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.22);
+    max-height: calc(100vh - 100px);
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .modal__top{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:flex-start;
+  }
+
+  .modal__top h2{
+    margin:0;
+    font-size: 32px;
+    line-height: 1.05;
+  }
+
+  .modal__top p{
+    margin:6px 0 0;
+    color:#555;
+  }
+
+  .modal-card{
+    background: #faf7f7;
+    border: 1px solid rgba(0,0,0,.07);
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .modal-card strong{
+    font-weight: 900;
+  }
+
+  .pay-list{
+    display:grid;
+    gap:10px;
+  }
+
+  .pay-item{
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:12px;
+    background:#fff;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+  }
+
+  .pay-item__title{
+    font-weight:900;
+    margin-bottom:4px;
+  }
+
+  .summary-box{
+    margin:0;
+    white-space:pre-wrap;
+    background:#111;
+    color:#fff;
+    padding:12px;
+    border-radius:14px;
+    font-size:13px;
+    line-height:1.5;
+    font-family: inherit;
+  }
+
+  .tiny{
+    margin:0;
+    color:#666;
+    font-size:12px;
+  }
+
+  @media (max-width: 720px){
+    .card{
+      padding: 18px;
+      border-radius: 18px;
+    }
+
+    .section-title{
+      font-size: 26px;
+    }
+
+    .modal__dialog{
+      margin: 20px auto;
+      padding: 16px;
+      border-radius: 18px;
+      max-height: calc(100vh - 40px);
+    }
+
+    .modal__top h2{
+      font-size: 26px;
+    }
+
+    .pay-item{
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>
 </head>
 
 <body>
-<header>
-  <h1>The Muffin Man</h1>
-  <p>Small-batch muffins made with fresh fruit.</p>
+<header class="topbar">
+  <img src="assets/menu/banner.PNG" alt="The Muffin Man" class="topbar__banner">
 </header>
 
 <main>
+  <section class="hero">
+    <h1>Build Your Order</h1>
+    <p>Small-batch muffins made with fresh fruit and bold flavors. Add your muffins to the cart below, then submit one order.</p>
+  </section>
+
   <div class="grid">
     <!-- LEFT COLUMN -->
     <div class="card">
-      <h2>Menu</h2>
-      <div class="menu">
-        <p><strong>Blueberry Cinnamon</strong> – Sweet Blueberry Muffin with Cinnamon Crumble</p>
-        <p><strong>Strawberry Lemon</strong> – Muffin with Ripe Strawberries & Lemon Crumble</p>
-        <p><strong>Orange Creamsicle</strong> – Orange flavored muffin with White Chocoloate Chips topped with Citrus Crumble & Creamy Glaze</p>        
-        <p><strong>Double Chocolate</strong> – Chocolate muffin with Milk & Dark Chocolate chunks topped by Espresso Crumble</p>
-        <p><strong>White Chocolate Cherry</strong> – Muffin with Black Cherries & White Chocolate Chips</p>
-        <p><strong>Chocolate Raspberry</strong> – Chocolate muffin with Tart Raspberries & Cocoa Crumble</p>
-        <p><strong>Cookies & Cream</strong> – Chocolate muffin with Cookie Bits & White Cream Chips topped with Cookie Crumble & Cream Filling Glaze</p>
+      <h2 class="section-title">Menu</h2>
+      <p class="muted">Choose your flavor, then add singles, half dozens, or dozens to your cart.</p>
+
+      <div class="menu-list">
+        <div class="menu-line">
+          <strong>Blueberry Cinnamon</strong>
+          <span>Sweet blueberry muffin with cinnamon crumble.</span>
+        </div>
+
+        <div class="menu-line">
+          <strong>Strawberry Lemon</strong>
+          <span>Muffin with ripe strawberries and lemon crumble.</span>
+        </div>
+
+        <div class="menu-line">
+          <strong>Orange Creamsicle</strong>
+          <span>Orange flavored muffin with white chocolate chips, topped with citrus crumble and creamy glaze.</span>
+        </div>
+
+        <div class="menu-line">
+          <strong>Double Chocolate</strong>
+          <span>Chocolate muffin with milk and dark chocolate chunks topped by espresso crumble.</span>
+        </div>
+
+        <div class="menu-line">
+          <strong>White Chocolate Cherry</strong>
+          <span>Muffin with black cherries and white chocolate chips.</span>
+        </div>
+
+        <div class="menu-line">
+          <strong>Chocolate Raspberry</strong>
+          <span>Chocolate muffin with tart raspberries and cocoa crumble.</span>
+        </div>
+
+        <div class="menu-line">
+          <strong>Cookies &amp; Cream</strong>
+          <span>Chocolate muffin with cookie bits and white cream chips topped with cookie crumble and cream filling glaze.</span>
+        </div>
+      </div>
+
+      <div class="link-row">
+        <a class="menu-link" href="menu.html">View Full Menu Page</a>
       </div>
 
       <div class="divider"></div>
 
-      <h2>Build Your Order</h2>
-      <p class="muted">Add singles, half dozens, and/or dozens to your cart, then submit one order.</p>
+      <h2 class="section-title">Build Your Order</h2>
+      <p class="muted">Add multiple flavors and pack sizes. Each cart line is one flavor.</p>
 
       <div class="builder">
         <!-- PACK 1: SINGLE -->
@@ -114,7 +549,7 @@
                 <option>Double Chocolate</option>
                 <option>White Chocolate Cherry</option>
                 <option>Chocolate Raspberry</option>
-                <option>Cookies & Cream</option>
+                <option>Cookies &amp; Cream</option>
               </select>
             </div>
             <div>
@@ -124,8 +559,8 @@
           </div>
 
           <button type="button" onclick="addToCart('single')">Add Singles</button>
-          <p style="font-size:12px; color:#777; margin:0;">
-            <strong>Need 6 or more? Choose Half Dozen for better value.</strong>
+          <p class="helper">
+            <strong>Need 6 or more?</strong> Choose Half Dozen for better value.
           </p>
         </div>
 
@@ -146,7 +581,7 @@
                 <option>Double Chocolate</option>
                 <option>White Chocolate Cherry</option>
                 <option>Chocolate Raspberry</option>
-                <option>Cookies & Cream</option>
+                <option>Cookies &amp; Cream</option>
               </select>
             </div>
             <div>
@@ -175,7 +610,7 @@
                 <option>Double Chocolate</option>
                 <option>White Chocolate Cherry</option>
                 <option>Chocolate Raspberry</option>
-                <option>Cookies & Cream</option>
+                <option>Cookies &amp; Cream</option>
               </select>
             </div>
             <div>
@@ -189,14 +624,14 @@
       </div>
 
       <div class="notice">
-        <strong>Note:</strong> Each line item is one flavor. Add multiple lines if you want multiple flavors.
+        <strong>Note:</strong> Each line item is one flavor. Add multiple lines if you want multiple flavors in the same order.
       </div>
     </div>
 
     <!-- RIGHT COLUMN -->
     <div class="card">
-      <h2>Your Cart</h2>
-      <p class="muted" id="cartEmptyText">Your cart is empty. Add something on the left.</p>
+      <h2 class="section-title">Your Cart</h2>
+      <p class="cart-empty" id="cartEmptyText">Your cart is empty. Add something on the left.</p>
 
       <div id="cartArea" style="display:none;">
         <ul class="cart-list" id="cartList"></ul>
@@ -206,139 +641,127 @@
 
       <div class="divider"></div>
 
-      <h2>Customer Info</h2>
-      <div style="display:grid; gap:10px;">
+      <h2 class="section-title">Customer Info</h2>
+      <div class="form-grid">
         <div>
           <label for="custName">Name</label>
           <input id="custName" placeholder="Your name" />
         </div>
+
         <div>
           <label for="custPhone">Phone (optional)</label>
           <input id="custPhone" placeholder="(555) 123-4567" />
         </div>
-        
 
-        <button type="button" onclick="submitOrder()">Submit Order (Email)</button>
+        <button type="button" onclick="submitOrder()">Submit Order</button>
         <button class="secondary" type="button" onclick="clearCart()">Clear Cart</button>
 
-        <p class="muted" style="margin: 0;">
-          This site uses email submission (no payment processing yet).
+        <p class="muted">
+          Orders are submitted through the site. Payment is selected in the confirmation popup.
         </p>
       </div>
     </div>
   </div>
 
-<!-- PAYMENT MODAL -->
-<div id="paymentModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); padding:16px; z-index:9999; overflow:auto; -webkit-overflow-scrolling:touch;">
-  <div style="max-width:720px; margin:60px auto; background:#fff; border-radius:14px; padding:18px; box-shadow:0 10px 30px rgba(0,0,0,.25); max-height: calc(100vh - 120px); overflow:auto; -webkit-overflow-scrolling:touch;">
-    <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
-      <div>
-        <h2 style="margin:0;">Payment Required</h2>
-        <p style="margin:6px 0 0; color:#555;">
-          Please pay to confirm your order. Include your Order # in the payment note/memo.
-        </p>
-      </div>
-      <button type="button" class="secondary" onclick="closePaymentModal()" style="height:40px;">Close</button>
-    </div>
-
-    <div class="divider"></div>
-
-    <div style="display:grid; gap:10px;">
-      <div style="background:#faf6f1; border:1px solid #eee; border-radius:12px; padding:12px;">
-        <div style="font-weight:900; font-size:18px;">
-          Order #: <span id="orderNumberText"></span>
+  <!-- PAYMENT MODAL -->
+  <div id="paymentModal" class="modal">
+    <div class="modal__dialog">
+      <div class="modal__top">
+        <div>
+          <h2>Payment Required</h2>
+          <p>Please pay to confirm your order. Include your Order # in the payment note or memo.</p>
         </div>
-        <div style="margin-top:6px; color:#555;">
-          <strong>Deadline:</strong> Orders must be placed and paid before <strong>Wednesday 7am</strong>.
-        </div>
-        <div style="margin-top:6px; color:#555;">
-          Confirmation will be sent via email or text <strong>no more than 12 hours after payment</strong>.
-        </div>
+        <button type="button" class="secondary" onclick="closePaymentModal()">Close</button>
       </div>
 
-      <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
-  <div style="font-weight:900; margin-bottom:8px;">How will you pay?</div>
+      <div class="divider"></div>
 
-  <label for="payMethod" style="font-weight:700; font-size:13px;">Payment method (required)</label>
-  <select id="payMethod" required style="margin-top:6px;">
-    <option value="">Select…</option>
-    <option value="Zelle">Zelle</option>
-    <option value="Cash App">Cash App</option>
-    <option value="Apple Pay">Apple Pay</option>
-    <option value="PayPal">PayPal</option>
-    <option value="Cash">Cash</option>
-  </select>
+      <div style="display:grid; gap:12px;">
+        <div class="modal-card">
+          <div style="font-weight:900; font-size:18px;">
+            Order #: <span id="orderNumberText"></span>
+          </div>
+          <div style="margin-top:6px; color:#555;">
+            <strong>Deadline:</strong> Orders must be placed and paid before <strong>Wednesday 7am</strong>.
+          </div>
+          <div style="margin-top:6px; color:#555;">
+            Confirmation will be sent via email or text <strong>within 12 hours after payment</strong>.
+          </div>
+        </div>
 
-  <label for="payHandle" style="font-weight:700; font-size:13px; margin-top:10px; display:block;">
-    Payment name/handle (optional)
-  </label>
-  <input id="payHandle" placeholder="Example: John S. / $mycashapp / last 4 digits" style="margin-top:6px;" />
-</div>
+        <div class="modal-card" style="background:#fff;">
+          <div style="font-weight:900; margin-bottom:8px;">How will you pay?</div>
 
-      <div style="display:grid; gap:10px;">
-        <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
-          <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+          <label for="payMethod">Payment method (required)</label>
+          <select id="payMethod" required>
+            <option value="">Select…</option>
+            <option value="Zelle">Zelle</option>
+            <option value="Cash App">Cash App</option>
+            <option value="Apple Pay">Apple Pay</option>
+            <option value="PayPal">PayPal</option>
+            <option value="Cash">Cash</option>
+          </select>
+
+          <div style="margin-top:10px;">
+            <label for="payHandle">Payment name/handle (optional)</label>
+            <input id="payHandle" placeholder="Example: John S. / $mycashapp / last 4 digits" />
+          </div>
+        </div>
+
+        <div class="pay-list">
+          <div class="pay-item">
             <div>
-              <div style="font-weight:900;">Zelle</div>
+              <div class="pay-item__title">Zelle</div>
               <div id="zelleText" style="color:#555;">zachorii92@gmail.com</div>
             </div>
             <button type="button" onclick="copyText('zelleText')">Copy</button>
           </div>
-        </div>
 
-        <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
-          <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+          <div class="pay-item">
             <div>
-              <div style="font-weight:900;">Cash App</div>
+              <div class="pay-item__title">Cash App</div>
               <div id="cashappText" style="color:#555;">$zachorii</div>
             </div>
             <button type="button" onclick="copyText('cashappText')">Copy</button>
           </div>
-        </div>
 
-        <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
-          <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+          <div class="pay-item">
             <div>
-              <div style="font-weight:900;">Apple Pay</div>
+              <div class="pay-item__title">Apple Pay</div>
               <div id="applepayText" style="color:#555;">9729214688</div>
             </div>
             <button type="button" onclick="copyText('applepayText')">Copy</button>
           </div>
-        </div>
 
-        <div style="display:grid; gap:10px;">
-        <div style="border:1px solid #e6e6e6; border-radius:12px; padding:12px;">
-          <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
+          <div class="pay-item">
             <div>
-              <div style="font-weight:900;">PayPal</div>
+              <div class="pay-item__title">PayPal</div>
               <div id="paypalText" style="color:#555;">@zachorii</div>
             </div>
             <button type="button" onclick="copyText('paypalText')">Copy</button>
           </div>
         </div>
+
+        <div class="divider"></div>
+
+        <div>
+          <h3 style="margin:0 0 8px;">Order Summary</h3>
+          <pre id="orderSummaryText" class="summary-box"></pre>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+          <button type="button" onclick="sendOrderEmailFromModal()">Confirm &amp; Send Order</button>
+        </div>
+
+        <p class="tiny">
+          Tip: Use the Order # in your payment note, like “MM-ABC123”.
+        </p>
       </div>
-
-      <div class="divider"></div>
-
-      <div>
-        <h3 style="margin:0 0 6px;">Order Summary</h3>
-        <pre id="orderSummaryText" style="margin:0; white-space:pre-wrap; background:#111; color:#fff; padding:12px; border-radius:12px; font-size:13px;"></pre>
-      </div>
-
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;">
-        <button type="button" onclick="sendOrderEmailFromModal()">Confirm & Send Order</button>
-      </div>
-
-      <p style="margin:0; color:#666; font-size:12px;">
-        Tip: Use the Order # in your payment note (ex: “MM-ABC123”).
-      </p>
     </div>
   </div>
-</div>
-  
 </main>
+
 <script>
-  // ---- CONFIG ----
   const YOUR_EMAIL = "drurylane.business@gmail.com";
 
   const PACKS = {
@@ -347,11 +770,9 @@
     dozen:  { label: "Dozen", muffinsPerPack: 12, pricePerPack: 30 }
   };
 
-  // Cart items look like:
-  // { type: 'half', flavor: 'Blueberry Cinnamon', packQty: 2 }
   let cart = [];
+  let lastOrder = null;
 
-  // Populate quantity dropdowns (safe)
   function fillQty(selectId, max) {
     const el = document.getElementById(selectId);
     if (!el) return;
@@ -364,21 +785,30 @@
     }
   }
 
-  // money formatting
-  function money(n) { return Number(n).toFixed(2).replace(/\.00$/, ""); }
+  function money(n) {
+    return Number(n).toFixed(2).replace(/\.00$/, "");
+  }
 
-  // add to cart
   function addToCart(type) {
-    const pack = PACKS[type];
-    const flavorEl = document.getElementById(type === "single" ? "flavorSingle" : type === "half" ? "flavorHalf" : "flavorDozen");
-    const qtyEl = document.getElementById(type === "single" ? "qtySingle" : type === "half" ? "qtyHalf" : "qtyDozen");
+    const flavorEl = document.getElementById(
+      type === "single" ? "flavorSingle" :
+      type === "half" ? "flavorHalf" :
+      "flavorDozen"
+    );
+
+    const qtyEl = document.getElementById(
+      type === "single" ? "qtySingle" :
+      type === "half" ? "qtyHalf" :
+      "qtyDozen"
+    );
+
     if (!flavorEl || !qtyEl) return;
 
     const flavor = flavorEl.value;
     const packQty = parseInt(qtyEl.value, 10);
 
-    // Merge with existing same type+flavor
     const existingIndex = cart.findIndex(i => i.type === type && i.flavor === flavor);
+
     if (existingIndex !== -1) {
       cart[existingIndex].packQty += packQty;
     } else {
@@ -403,6 +833,7 @@
     const totalEl = document.getElementById("cartTotal");
     const emptyText = document.getElementById("cartEmptyText");
     const cartArea = document.getElementById("cartArea");
+
     if (!list || !totalEl || !emptyText || !cartArea) return;
 
     list.innerHTML = "";
@@ -443,11 +874,8 @@
     totalEl.textContent = money(total);
   }
 
-  // ---- Payment modal + order generation ----
-  let lastOrder = null;
-
   function generateOrderNumber() {
-    const num = Math.floor(Math.random() * 10000); // 0-9999
+    const num = Math.floor(Math.random() * 10000);
     return num.toString().padStart(4, "0");
   }
 
@@ -455,7 +883,9 @@
     const orderEl = document.getElementById("orderNumberText");
     const summaryEl = document.getElementById("orderSummaryText");
     const modal = document.getElementById("paymentModal");
-    document.body.style.overflow = "hidden";
+
+    document.body.classList.add("modal-open");
+
     if (orderEl) orderEl.textContent = orderNumber;
     if (summaryEl) summaryEl.textContent = summaryText;
     if (modal) modal.style.display = "block";
@@ -463,11 +893,13 @@
 
   function closePaymentModal() {
     const modal = document.getElementById("paymentModal");
-    document.body.style.overflow = "";
+    document.body.classList.remove("modal-open");
+
     if (modal) modal.style.display = "none";
 
     const methodEl = document.getElementById("payMethod");
     const handleEl = document.getElementById("payHandle");
+
     if (methodEl) methodEl.value = "";
     if (handleEl) handleEl.value = "";
   }
@@ -475,12 +907,13 @@
   async function copyText(elementId) {
     const el = document.getElementById(elementId);
     if (!el) return;
+
     const text = el.textContent.trim();
+
     try {
       await navigator.clipboard.writeText(text);
       alert("Copied!");
     } catch {
-      // fallback
       const ta = document.createElement("textarea");
       ta.value = text;
       document.body.appendChild(ta);
@@ -497,9 +930,8 @@
       return;
     }
 
-    const name = (document.getElementById("custName") && document.getElementById("custName").value.trim()) || "—";
-    const phone = (document.getElementById("custPhone") && document.getElementById("custPhone").value.trim()) || "—";
-    
+    const name = (document.getElementById("custName")?.value.trim()) || "—";
+    const phone = (document.getElementById("custPhone")?.value.trim()) || "—";
 
     let lines = [];
     let total = 0;
@@ -509,6 +941,7 @@
       const pack = PACKS[item.type];
       const muffins = item.packQty * pack.muffinsPerPack;
       const price = item.packQty * pack.pricePerPack;
+
       total += price;
       totalMuffins += muffins;
 
@@ -528,7 +961,6 @@ ${lines.join("\n")}
 
 Total muffins: ${totalMuffins}
 Total: $${money(total)}
-
 `;
 
     lastOrder = { orderNumber, name, phone, summaryText };
@@ -536,59 +968,54 @@ Total: $${money(total)}
   }
 
   async function sendOrderEmailFromModal() {
-  if (!lastOrder) return;
+    if (!lastOrder) return;
 
-  const methodEl = document.getElementById("payMethod");
-  const handleEl = document.getElementById("payHandle");
+    const methodEl = document.getElementById("payMethod");
+    const handleEl = document.getElementById("payHandle");
 
-  const payMethod = methodEl ? methodEl.value.trim() : "";
-  const payHandle = handleEl ? handleEl.value.trim() : "";
+    const payMethod = methodEl ? methodEl.value.trim() : "";
+    const payHandle = handleEl ? handleEl.value.trim() : "";
 
-  if (!payMethod) {
-    alert("Please select how you will pay.");
-    return;
+    if (!payMethod) {
+      alert("Please select how you will pay.");
+      return;
+    }
+
+    const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
+
+    const formData = new URLSearchParams();
+    formData.append("orderNumber", lastOrder.orderNumber);
+    formData.append("name", lastOrder.name);
+    formData.append("phone", lastOrder.phone);
+    formData.append("paymentMethod", payMethod);
+    formData.append("paymentHandle", payHandle);
+    formData.append("orderDetails", lastOrder.summaryText);
+
+    try {
+      await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body: formData.toString()
+      });
+
+      alert("Order sent successfully! Please complete payment.");
+      closePaymentModal();
+      clearCart();
+
+    } catch (error) {
+      alert("Network error. Please check your connection and try again.");
+    }
   }
 
-  const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
-
-  const formData = new URLSearchParams();
-  formData.append("orderNumber", lastOrder.orderNumber);
-  formData.append("name", lastOrder.name);
-  formData.append("phone", lastOrder.phone);
-  formData.append("paymentMethod", payMethod);
-  formData.append("paymentHandle", payHandle);
-  formData.append("orderDetails", lastOrder.summaryText);
-
-  try {
-    await fetch(FORM_ENDPOINT, {
-      method: "POST",
-      mode: "no-cors", // <-- key line: prevents CORS from triggering "network error"
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-      },
-      body: formData.toString()
-    });
-
-    // With no-cors, we assume success if no exception was thrown
-    alert("Order sent successfully! Please complete payment.");
-    closePaymentModal();
-    clearCart();
-
-  } catch (error) {
-    // If you STILL get here, it's usually offline or a real network problem
-    alert("Network error. Please check your connection and try again.");
-  }
-}
-
-  // DOM-ready init: populate selects and render cart
   document.addEventListener("DOMContentLoaded", () => {
-    fillQty("qtySingle", 5);   // singles capped at 5
+    fillQty("qtySingle", 5);
     fillQty("qtyHalf", 12);
     fillQty("qtyDozen", 12);
     renderCart();
   });
 </script>
-
-
 </body>
 </html>
