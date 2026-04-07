@@ -51,19 +51,6 @@ html, body{
   opacity: .95;
 }
 
-.announcement{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  width:100%;
-  background:#b34b4b;
-  color:white;
-  text-align:center;
-  padding:10px 15px;
-  font-size:14px;
-  font-weight:600;
-}
-
 .topbar__banner{
   display: block;
   width: min(100%, 520px);
