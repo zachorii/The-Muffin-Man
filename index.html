@@ -852,9 +852,11 @@
 
     const methodEl = document.getElementById("payMethod");
     const handleEl = document.getElementById("payHandle");
-
+    const pickupEl = document.getElementById("pickupLocation");
+   
     if (methodEl) methodEl.value = "";
     if (handleEl) handleEl.value = "";
+    if (pickupEl) pickupEl.value = "";
   }
 
   async function copyText(elementId) {
@@ -921,47 +923,55 @@ Total: $${money(total)}
   }
 
   async function sendOrderEmailFromModal() {
-    if (!lastOrder) return;
+  if (!lastOrder) return;
 
-    const methodEl = document.getElementById("payMethod");
-    const handleEl = document.getElementById("payHandle");
+  const methodEl = document.getElementById("payMethod");
+  const handleEl = document.getElementById("payHandle");
+  const pickupEl = document.getElementById("pickupLocation");
 
-    const payMethod = methodEl ? methodEl.value.trim() : "";
-    const payHandle = handleEl ? handleEl.value.trim() : "";
+  const payMethod = methodEl ? methodEl.value.trim() : "";
+  const payHandle = handleEl ? handleEl.value.trim() : "";
+  const pickupLocation = pickupEl ? pickupEl.value.trim() : "";
 
-    if (!payMethod) {
-      alert("Please select how you will pay.");
-      return;
-    }
-
-    const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
-
-    const formData = new URLSearchParams();
-    formData.append("orderNumber", lastOrder.orderNumber);
-    formData.append("name", lastOrder.name);
-    formData.append("phone", lastOrder.phone);
-    formData.append("paymentMethod", payMethod);
-    formData.append("paymentHandle", payHandle);
-    formData.append("orderDetails", lastOrder.summaryText);
-
-    try {
-      await fetch(FORM_ENDPOINT, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-        },
-        body: formData.toString()
-      });
-
-      alert("Order sent successfully! Please complete payment.");
-      closePaymentModal();
-      clearCart();
-
-    } catch (error) {
-      alert("Network error. Please check your connection and try again.");
-    }
+  if (!payMethod) {
+    alert("Please select how you will pay.");
+    return;
   }
+
+  if (!pickupLocation) {
+    alert("Please select a pickup location.");
+    return;
+  }
+
+  const FORM_ENDPOINT = "https://submit-form.com/OVM8b32N4";
+
+  const formData = new URLSearchParams();
+  formData.append("orderNumber", lastOrder.orderNumber);
+  formData.append("name", lastOrder.name);
+  formData.append("phone", lastOrder.phone);
+  formData.append("paymentMethod", payMethod);
+  formData.append("paymentHandle", payHandle);
+  formData.append("pickupLocation", pickupLocation);
+  formData.append("orderDetails", `${lastOrder.summaryText}\nPickup location: ${pickupLocation}`);
+
+  try {
+    await fetch(FORM_ENDPOINT, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+      },
+      body: formData.toString()
+    });
+
+    alert("Order sent successfully! Please complete payment.");
+    closePaymentModal();
+    clearCart();
+
+  } catch (error) {
+    alert("Network error. Please check your connection and try again.");
+  }
+}
 
   document.addEventListener("DOMContentLoaded", () => {
     fillQty("qtySingle", 5);
