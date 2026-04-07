@@ -40,7 +40,7 @@
 
   .topbar{
     position: sticky;
-    top: 0;
+    top: 42px;
     z-index: 20;
     background: #fff;
     display: flex;
@@ -48,6 +48,23 @@
     justify-content: center;
     padding: 10px var(--pad);
     border-bottom: 1px solid var(--line);
+  }
+
+    .top-notice{
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    text-align: center;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 10px 14px;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+
+  .top-notice span{
+    opacity: .95;
   }
 
   .topbar__banner{
@@ -460,6 +477,11 @@
 </head>
 
 <body>
+
+<div class="top-notice">
+  Orders must be placed and paid before <span>Wednesday 7am</span>
+</div>
+  
 <header class="topbar">
   <img src="assets/menu/banner.PNG" alt="The Muffin Man" class="topbar__banner">
 </header>
