@@ -24,7 +24,7 @@ html, body{
 
 .topbar{
   position: sticky;
-  top: 0;
+  top: 42px;
   z-index: 20;
   background: #fff;
   display: flex;
@@ -34,6 +34,22 @@ html, body{
   border-bottom: 1px solid rgba(0,0,0,.06);
 }
 
+.top-notice{
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  text-align: center;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 10px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.top-notice span{
+  opacity: .95;
+}
 
 .announcement{
   position:sticky;
